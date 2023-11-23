@@ -1,0 +1,47 @@
+@import "mixins.scss";
+
+.example {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--background-primary);
+  display: flex;
+  flex-flow: column nowrap;
+  margin-bottom: 20px;
+
+  .exampleBlock {
+    flex-shrink: 0;
+    padding: 24px;
+    padding-bottom: 0;
+  }
+
+  .exampleBottom {
+    flex-shrink: 0;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    padding: 10px 24px;
+
+    .description {
+      flex-grow: 1;
+      font-size: 14px;
+      color: var(--content-3);
+      padding-right: 20px;
+    }
+
+    .codeButton {
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+  }
+
+  .code {
+    border-top: 1px solid var(--border);
+    flex-shrink: 0;
+    padding: 24px;
+
+    :global(.mantine-CodeHighlightTabs-root) {
+      margin-bottom: 0 !important;
+      background: var(--background-secondary) !important;
+    }
+  }
+}

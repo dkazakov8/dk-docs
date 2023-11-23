@@ -1,0 +1,138 @@
+@import "mixins.scss";
+
+.modalContent {
+  @include modal;
+
+  .contentLine {
+    padding: 40px;
+    overflow-y: auto;
+
+    :global(.mobile) & {
+      padding: 16px;
+    }
+  }
+}
+
+.viewDocument {
+  max-width: 800px;
+
+  .contentLine {
+    padding: 0 !important;
+    height: 100%;
+    overflow: hidden;
+
+    :global(.mobile) & {
+      height: 100%;
+    }
+  }
+}
+
+.tasksBatch {
+  max-width: 800px;
+
+  .contentLine {
+    padding: 0 15px 15px 15px !important;
+  }
+
+  .checkbox {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    transition: all 0.2s;
+    cursor: pointer;
+    font-size: 20px;
+    color: var(--background-primary);
+    background: var(--background-primary);
+    padding: 1px;
+    vertical-align: middle;
+
+    &:hover {
+      border-color: var(--content-3);
+    }
+
+    &.active {
+      background: var(--blue-background);
+      border-color: var(--blue-border);
+      color: var(--blue-base);
+    }
+  }
+
+  .buttonsRow {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    padding: 15px;
+    flex-shrink: 0;
+
+    .button {
+      margin-right: 15px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+}
+
+.error {
+  .title {
+    @include body18Regular;
+  }
+
+  .text {
+    @include body16Regular;
+  }
+
+  .buttonLine {
+    padding: 32px 0 8px 0;
+  }
+
+  .error {
+    .icon {
+      color: var(--red-base);
+    }
+  }
+}
+
+.createLeftovers {
+  max-width: 400px;
+
+  .contentLine {
+    padding: 10px 20px 20px 20px !important;
+  }
+
+  .dateForm {
+    > * {
+      margin-bottom: 15px;
+    }
+  }
+
+  .buttonsRow {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    padding-top: 15px;
+    flex-shrink: 0;
+  }
+}
+
+.editLeftover {
+  max-width: 400px;
+
+  .contentLine {
+    padding: 10px 20px 20px 20px !important;
+  }
+
+  .dateForm {
+    > * {
+      margin-bottom: 15px;
+    }
+  }
+
+  .buttonsRow {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    padding-top: 15px;
+    flex-shrink: 0;
+  }
+}

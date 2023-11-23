@@ -1,0 +1,6 @@
+import { TypeMessage } from 'dk-localize';
+
+export type TypeInputSubmitConfig = {
+  type: 'submit';
+  label: TypeMessage;
+};

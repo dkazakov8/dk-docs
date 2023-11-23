@@ -1,0 +1,25 @@
+@import "mixins.scss";
+
+.sidebar {
+  padding: 0 30px;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.block {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+
+  .firstTitle {
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+
+  .secondTitle {
+    @include link;
+    padding-left: 10px;
+  }
+}

@@ -1,0 +1,93 @@
+@import "mixins.scss";
+
+$input_height: 40px;
+
+.inputWrapper {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  position: relative;
+  width: 100%;
+
+  label {
+    @include inline-top;
+    font-size: 14px;
+    user-select: none;
+    color: var(--content-3);
+    padding-bottom: 8px;
+    cursor: pointer;
+  }
+
+  .inputInner {
+    width: 100%;
+    position: relative;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    overflow: hidden;
+    background: var(--background-primary);
+
+    input[type="text"],
+    textarea {
+      font-size: 16px;
+      display: block;
+      min-height: $input_height;
+      width: 100%;
+      background: transparent;
+      border: 0;
+      padding: 0 16px;
+      color: var(--content-1);
+
+      &::placeholder {
+        color: var(--content-3);
+      }
+    }
+  }
+
+  textarea {
+    min-height: 120px;
+    resize: none;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+  &.focused,
+  &:hover {
+    .inputInner {
+      border-color: var(--content-3);
+    }
+  }
+
+  &.hasErrors {
+    .inputInner {
+      border-color: var(--red-base) !important;
+    }
+  }
+
+  .errors {
+    font-size: 14px;
+    color: var(--red-base);
+    width: 100%;
+    padding-top: 8px;
+
+    .errorItem {
+      padding-bottom: 5px;
+
+      &:last-child {
+        padding-bottom: 0;
+      }
+    }
+  }
+
+  &.disabled {
+    pointer-events: none;
+    user-select: none;
+
+    .inputInner {
+      background: var(--background-secondary);
+    }
+  }
+}

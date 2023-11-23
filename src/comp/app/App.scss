@@ -1,0 +1,11 @@
+@import "mixins.scss";
+
+.content {
+  flex-grow: 1;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: stretch;
+  max-width: 1440px;
+  width: 100%;
+  align-self: center;
+}

@@ -1,0 +1,3 @@
+import { TypeInputTextConfig } from './TypeInputTextConfig';
+
+export type TypeAnyInput = TypeInputTextConfig;

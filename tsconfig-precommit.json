@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "env.ts",
+    "paths.ts",
+    "styleguide",
+    "src",
+    "_webpack",
+    "tests"
+  ]
+}

@@ -1,10 +1,12 @@
 import { omit } from 'lodash';
 import cn from 'classnames';
-import { createRef } from 'react';
+import React, { createRef } from 'react';
+import { IReactionDisposer } from 'mobx';
 
 import { transformers } from 'compSystem/transformers';
-import { ConnectedComponent } from 'compSystem/ConnectedComponent';
 import { generateId } from 'utils';
+import { AbsViewModel, useStore } from 'hooks/useStore';
+import { TypeGlobals } from 'models';
 
 import styles from './Ripple.scss';
 
@@ -24,14 +26,24 @@ type TypeRipple = {
 
 const RIPPLE_DURATION = 600;
 
-export class Ripple extends ConnectedComponent<PropsRipple> {
+class VM implements AbsViewModel {
+  autorunDisposers: Array<IReactionDisposer> = [];
+
+  constructor(public context: TypeGlobals, public props: PropsRipple) {
+    transformers.classToObservable(
+      this,
+      { context: false, props: false, autorunDisposers: false, rippleRef: false },
+      { autoBind: true }
+    );
+  }
+
   rippleRef = createRef<HTMLDivElement>();
-  localState = transformers.observable({
+  localState = {
     ripples: [] as Array<TypeRipple>,
     eventIsAdded: false,
-  });
+  };
 
-  handleCreateRipple = (event: MouseEvent) => {
+  handleCreateRipple(event: MouseEvent) {
     const { ripples } = this.localState;
     const rippleContainer = (event.currentTarget as HTMLDivElement).getBoundingClientRect();
 
@@ -62,15 +74,15 @@ export class Ripple extends ConnectedComponent<PropsRipple> {
         }, RIPPLE_DURATION),
       });
     });
-  };
+  }
 
-  componentDidMount() {
+  afterMount() {
     if (this.rippleRef.current?.parentElement) {
       this.rippleRef.current?.parentElement.addEventListener('mousedown', this.handleCreateRipple);
     }
   }
 
-  componentWillUnmount() {
+  beforeUnmount() {
     const { ripples } = this.localState;
 
     ripples.forEach(({ timeout }) => clearTimeout(timeout));
@@ -94,15 +106,17 @@ export class Ripple extends ConnectedComponent<PropsRipple> {
       />
     ));
   }
-
-  render() {
-    return (
-      <div
-        className={cn(styles.rippleWrapper, this.ripples.length > 0 && styles.hasRipples)}
-        ref={this.rippleRef}
-      >
-        {this.ripples}
-      </div>
-    );
-  }
 }
+
+export const Ripple = transformers.observer(function Ripple(props: PropsRipple) {
+  const { vm } = useStore(VM, props);
+
+  return (
+    <div
+      className={cn(styles.rippleWrapper, vm.ripples.length > 0 && styles.hasRipples)}
+      ref={vm.rippleRef}
+    >
+      {vm.ripples}
+    </div>
+  );
+});

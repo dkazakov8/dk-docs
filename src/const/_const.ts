@@ -5,7 +5,6 @@ export * from './dateFormat';
 export * from './errorCodes';
 export * from './errorsNames';
 export * from './languages';
-export * from './modalIds';
 export * from './serverRoutes';
 export * from './system';
 export * from './testId';

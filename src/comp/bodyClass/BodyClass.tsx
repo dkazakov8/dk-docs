@@ -1,20 +1,22 @@
-import { ConnectedComponent } from 'compSystem/ConnectedComponent';
+import { AbsViewModel, useStore } from 'hooks/useStore';
+import { TypeGlobals } from 'models';
+import { transformers } from 'compSystem/transformers';
 
 type PropsBodyClass = {
   isActive: boolean;
   className: string;
 };
 
-export class BodyClass extends ConnectedComponent<PropsBodyClass> {
-  UNSAFE_componentWillMount() {
+class VM implements AbsViewModel {
+  constructor(public context: TypeGlobals, public props: PropsBodyClass) {
+    transformers.classToObservable(this, { context: false, props: false }, { autoBind: true });
+  }
+
+  beforeMount() {
     this.handleUpdateBodyClass();
   }
 
-  componentDidUpdate() {
-    this.handleUpdateBodyClass();
-  }
-
-  componentWillUnmount() {
+  beforeUnmount() {
     if (!IS_CLIENT) return;
 
     const { className } = this.props;
@@ -22,6 +24,9 @@ export class BodyClass extends ConnectedComponent<PropsBodyClass> {
     document.body.classList.remove(className);
   }
 
+  // componentDidUpdate() {
+  //   this.handleUpdateBodyClass();
+  // }
   handleUpdateBodyClass = () => {
     if (!IS_CLIENT) return;
 
@@ -33,8 +38,10 @@ export class BodyClass extends ConnectedComponent<PropsBodyClass> {
       document.body.classList.remove(className);
     }
   };
-
-  render() {
-    return null;
-  }
 }
+
+export const BodyClass = transformers.observer(function BodyClass(props: PropsBodyClass) {
+  useStore(VM, props);
+
+  return null;
+});

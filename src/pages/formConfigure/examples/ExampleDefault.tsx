@@ -4,8 +4,9 @@ import { Form } from 'comp/form';
 import { TypeGlobals, TypeInputTextConfig } from 'models';
 import { AbsViewModel, useStore } from 'hooks/useStore';
 import { transformers } from 'compSystem/transformers';
+import { fieldValidators } from 'utils';
 
-import styles from '../FormTextComponent.scss';
+import styles from '../FormConfigure.scss';
 
 const sampleForm = new FormConfig<{
   inputs: {
@@ -17,6 +18,7 @@ const sampleForm = new FormConfig<{
       type: 'text',
       value: '',
       placeholder: 'Simple text field',
+      validators: { emptyString: fieldValidators.emptyString },
     },
   },
 });
@@ -29,12 +31,20 @@ class VM implements AbsViewModel {
   sampleForm = sampleForm.copy();
 }
 
-export const ExampleRegularInput = transformers.observer(function ExampleRegularInput() {
+export const ExampleDefault = transformers.observer(function ExampleDefault() {
   const { vm } = useStore(VM);
 
   return (
-    <Form formConfig={vm.sampleForm} className={styles.form}>
-      {({ inputs }) => inputs.textField}
-    </Form>
+    <div>
+      <Form formConfig={vm.sampleForm}>
+        {({ inputs }) => <div className={styles.result}>{inputs.textField}</div>}
+      </Form>
+      <div className={styles.result}>
+        this.sampleForm.inputs: {JSON.stringify(vm.sampleForm.inputs)}
+      </div>
+      <div className={styles.result}>
+        this.sampleForm.original: {JSON.stringify(vm.sampleForm.original)}
+      </div>
+    </div>
   );
 });

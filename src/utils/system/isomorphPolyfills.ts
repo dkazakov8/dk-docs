@@ -40,7 +40,7 @@ function replaceOriginalErrorLogger() {
 
 export function isomorphPolyfills() {
   configure({
-    enforceActions: 'always',
+    enforceActions: 'observed',
     disableErrorBoundaries: false,
     computedRequiresReaction: false,
     reactionRequiresObservable: false,

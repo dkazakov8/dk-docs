@@ -1,21 +1,19 @@
 import { Collapse } from 'antd';
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 
-import { ConnectedComponent } from 'compSystem/ConnectedComponent';
+import { transformers } from 'compSystem/transformers';
 
 export type TypeItems = Array<{
   label: string;
   children: ReactNode;
 }>;
 
-export class Cl extends ConnectedComponent<{ items: TypeItems }> {
-  render() {
-    return (
-      <Collapse
-        size={'middle'}
-        ghost
-        items={this.props.items.map((item) => ({ ...item, key: item.label }))}
-      />
-    );
-  }
-}
+export const Cl = transformers.observer(function Cl(props: { items: TypeItems }) {
+  return (
+    <Collapse
+      size={'middle'}
+      ghost
+      items={props.items.map((item) => ({ ...item, key: item.label }))}
+    />
+  );
+});

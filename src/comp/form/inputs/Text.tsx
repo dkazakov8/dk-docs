@@ -2,29 +2,22 @@ import cn from 'classnames';
 import { ChangeEvent } from 'react';
 import { TypeInputProps } from 'dk-react-mobx-config-form';
 import { values } from 'lodash';
-import { action, makeObservable } from 'mobx';
 
-import { ConnectedComponent } from 'compSystem/ConnectedComponent';
-import { TypeForm, TypeInputTextConfig } from 'models';
+import { TypeForm, TypeGlobals, TypeInputTextConfig } from 'models';
+import { AbsViewModel, useStore } from 'hooks/useStore';
+import { transformers } from 'compSystem/transformers';
 
 import styles from '../Form.scss';
 
-export class Text<TFormConfig extends TypeForm['TypeFormConfig']> extends ConnectedComponent<
-  TypeInputProps<TFormConfig, TypeInputTextConfig>
-> {
-  constructor(props: any) {
-    super(props);
-
-    makeObservable(this, {
-      UNSAFE_componentWillMount: action,
-      isValidFn: action,
-      handleBlur: action,
-      handleFocus: action,
-      handleChange: action,
-    });
+class VM<TFormConfig extends TypeForm['TypeFormConfig']> implements AbsViewModel {
+  constructor(
+    public context: TypeGlobals,
+    public props: TypeInputProps<TFormConfig, TypeInputTextConfig>
+  ) {
+    transformers.classToObservable(this, { context: false, props: false }, { autoBind: true });
   }
 
-  UNSAFE_componentWillMount() {
+  beforeMount() {
     const { inputConfig, name, initialData } = this.props;
 
     Object.assign(inputConfig, {
@@ -38,7 +31,7 @@ export class Text<TFormConfig extends TypeForm['TypeFormConfig']> extends Connec
     });
   }
 
-  isValidFn = (checkOnly?: boolean) => {
+  isValidFn(checkOnly?: boolean) {
     const { inputConfig } = this.props;
 
     if (inputConfig.disabled) return true;
@@ -50,66 +43,70 @@ export class Text<TFormConfig extends TypeForm['TypeFormConfig']> extends Connec
     if (!checkOnly) Object.assign(inputConfig, { errors });
 
     return errors.length === 0;
-  };
+  }
 
-  handleBlur = () => {
+  handleBlur() {
     const { inputConfig } = this.props;
 
     Object.assign(inputConfig, { isFocused: false });
 
     this.isValidFn();
-  };
+  }
 
-  handleFocus = () => {
+  handleFocus() {
     const { inputConfig } = this.props;
 
     Object.assign(inputConfig, { isFocused: true, errors: [] });
-  };
+  }
 
-  handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+  handleChange(event: ChangeEvent<HTMLInputElement>) {
     const { inputConfig } = this.props;
 
     Object.assign(inputConfig, { value: event.target.value || '' });
-  };
-
-  render() {
-    const { name, inputConfig } = this.props;
-
-    return (
-      <div
-        className={cn({
-          [styles.inputWrapper]: true,
-          [styles.disabled]: inputConfig.disabled,
-          [styles.focused]: inputConfig.isFocused,
-          [styles.hasErrors]: inputConfig.errors!.length > 0,
-        })}
-      >
-        {Boolean(inputConfig.label) && <label htmlFor={inputConfig.id}>{inputConfig.label!}</label>}
-
-        <div className={styles.inputInner}>
-          <input
-            id={inputConfig.id}
-            name={name}
-            type={'text'}
-            value={inputConfig.value}
-            disabled={inputConfig.disabled}
-            placeholder={inputConfig.placeholder}
-            onBlur={this.handleBlur}
-            onFocus={this.handleFocus}
-            onChange={this.handleChange}
-          />
-        </div>
-
-        {inputConfig.errors!.length > 0 && (
-          <div className={styles.errors}>
-            {inputConfig.errors!.map((errorObject) => (
-              <div className={styles.errorItem} key={errorObject.message}>
-                {errorObject.message}
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    );
   }
 }
+
+export const Text = transformers.observer(function Text<
+  TFormConfig extends TypeForm['TypeFormConfig']
+>(props: TypeInputProps<TFormConfig, TypeInputTextConfig>) {
+  const { vm } = useStore(VM, props);
+
+  const { name, inputConfig } = props;
+
+  return (
+    <div
+      className={cn({
+        [styles.inputWrapper]: true,
+        [styles.disabled]: inputConfig.disabled,
+        [styles.focused]: inputConfig.isFocused,
+        [styles.hasErrors]: inputConfig.errors!.length > 0,
+      })}
+    >
+      {Boolean(inputConfig.label) && <label htmlFor={inputConfig.id}>{inputConfig.label!}</label>}
+
+      <div className={styles.inputInner}>
+        <input
+          id={inputConfig.id}
+          name={name}
+          type={'text'}
+          value={inputConfig.value}
+          disabled={inputConfig.disabled}
+          placeholder={inputConfig.placeholder}
+          onBlur={vm.handleBlur}
+          onFocus={vm.handleFocus}
+          onChange={vm.handleChange}
+        />
+      </div>
+
+      {inputConfig.errors!.length > 0 && (
+        <div className={styles.errors}>
+          {inputConfig.errors!.map((errorObject) => (
+            <div className={styles.errorItem} key={errorObject.message}>
+              {errorObject.message}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+});

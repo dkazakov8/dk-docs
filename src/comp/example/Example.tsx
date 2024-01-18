@@ -1,9 +1,10 @@
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 
-import { ConnectedComponent } from 'compSystem/ConnectedComponent';
 import { Button } from 'comp/button';
 import { transformers } from 'compSystem/transformers';
 import { Sh } from 'comp/sh';
+import { AbsViewModel, useStore } from 'hooks/useStore';
+import { TypeGlobals } from 'models';
 
 import styles from './Example.scss';
 
@@ -13,49 +14,53 @@ type PropsExample = {
   description?: string;
 };
 
-export class Example extends ConnectedComponent<PropsExample> {
-  localState = transformers.observable({
-    codeOpen: false,
-  });
+class VM implements AbsViewModel {
+  constructor(public context: TypeGlobals, public props: PropsExample) {
+    transformers.classToObservable(this, { context: false, props: false }, { autoBind: true });
+  }
 
-  handleToggleCode = () => {
-    transformers.batch(() => {
-      this.localState.codeOpen = !this.localState.codeOpen;
-    });
+  localState = {
+    codeOpen: false,
   };
 
-  render() {
-    const { children, code, description } = this.props;
-    const { codeOpen } = this.localState;
-
-    return (
-      <div className={styles.example}>
-        <div className={styles.exampleBlock}>{children}</div>
-        <div className={styles.exampleBottom}>
-          <div className={styles.description}>{description}</div>
-          <Button
-            type={'white'}
-            iconOnly={'code'}
-            className={styles.codeButton}
-            noShadow
-            onClick={this.handleToggleCode}
-          />
-        </div>
-        {codeOpen && (
-          <div className={styles.code}>
-            <Sh
-              noExpand
-              code={[
-                {
-                  fileName: 'Example',
-                  code,
-                  language: 'tsx',
-                },
-              ]}
-            />
-          </div>
-        )}
-      </div>
-    );
+  handleToggleCode() {
+    this.localState.codeOpen = !this.localState.codeOpen;
   }
 }
+
+export const Example = transformers.observer(function Example(props: PropsExample) {
+  const { vm } = useStore(VM, props);
+
+  const { children, code, description } = props;
+  const { codeOpen } = vm.localState;
+
+  return (
+    <div className={styles.example}>
+      <div className={styles.exampleBlock}>{children}</div>
+      <div className={styles.exampleBottom}>
+        <div className={styles.description}>{description}</div>
+        <Button
+          type={'white'}
+          iconOnly={'code'}
+          className={styles.codeButton}
+          noShadow
+          onClick={vm.handleToggleCode}
+        />
+      </div>
+      {codeOpen && (
+        <div className={styles.code}>
+          <Sh
+            noExpand
+            code={[
+              {
+                fileName: 'Example',
+                code,
+                language: 'tsx',
+              },
+            ]}
+          />
+        </div>
+      )}
+    </div>
+  );
+});

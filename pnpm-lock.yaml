@@ -36,11 +36,11 @@ dependencies:
     specifier: 3.1.37
     version: registry.npmjs.org/dk-mobx-restore-state@3.1.37
   dk-react-mobx-config-form:
-    specifier: 3.1.37
-    version: registry.npmjs.org/dk-react-mobx-config-form@3.1.37(lodash@4.17.21)(mobx@6.12.0)(react@18.2.0)
+    specifier: 3.1.38
+    version: registry.npmjs.org/dk-react-mobx-config-form@3.1.38(lodash@4.17.21)(mobx@6.12.0)(react@18.2.0)
   dk-react-mobx-globals:
     specifier: 3.1.37
-    version: registry.npmjs.org/dk-react-mobx-globals@3.1.37(dk-localize@3.1.37)(dk-request@3.1.37)(mobx@6.12.0)(react@18.2.0)
+    version: registry.npmjs.org/dk-react-mobx-globals@3.1.37(dk-localize@3.1.37)(dk-request@3.1.38)(mobx@6.12.0)(react@18.2.0)
   dk-react-mobx-router:
     specifier: 3.1.37
     version: registry.npmjs.org/dk-react-mobx-router@3.1.37(history@5.3.0)(mobx@6.12.0)(react@18.2.0)
@@ -56,9 +56,9 @@ dependencies:
   mobx:
     specifier: 6.12.0
     version: registry.npmjs.org/mobx@6.12.0
-  mobx-react:
-    specifier: 8.0.0
-    version: registry.npmjs.org/mobx-react@8.0.0(mobx@6.12.0)(react-dom@18.2.0)(react@18.2.0)
+  mobx-react-lite:
+    specifier: 4.0.5
+    version: registry.npmjs.org/mobx-react-lite@4.0.5(mobx@6.12.0)(react-dom@18.2.0)(react@18.2.0)
   prop-types:
     specifier: 15.8.1
     version: registry.npmjs.org/prop-types@15.8.1
@@ -2888,11 +2888,11 @@ packages:
       - supports-color
     dev: false
 
-  registry.npmjs.org/dk-checker-remove-extraneous@3.1.37(lodash@4.17.21):
-    resolution: {integrity: sha512-TPB5PYYXYqPSX0TeEewhHOnU64gKzVn8J1JpOt+FhBUhuLawXC2p8HTqWQLIDIi9dfX8UlVhUWhniGPtQqt0vg==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/dk-checker-remove-extraneous/-/dk-checker-remove-extraneous-3.1.37.tgz}
-    id: registry.npmjs.org/dk-checker-remove-extraneous/3.1.37
+  registry.npmjs.org/dk-checker-remove-extraneous@3.1.38(lodash@4.17.21):
+    resolution: {integrity: sha512-CiM25eHxrD9MNhtvOZ7ZsNnzuSn+OX/nbRScY+V8JH8PgLHredEd7wYe8qc1RGrOmwK2IAZ9UxbhSqgPemsXmw==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/dk-checker-remove-extraneous/-/dk-checker-remove-extraneous-3.1.38.tgz}
+    id: registry.npmjs.org/dk-checker-remove-extraneous/3.1.38
     name: dk-checker-remove-extraneous
-    version: 3.1.37
+    version: 3.1.38
     peerDependencies:
       lodash: '*'
     dependencies:
@@ -2987,11 +2987,11 @@ packages:
       mobx: registry.npmjs.org/mobx@6.12.0
     dev: false
 
-  registry.npmjs.org/dk-react-mobx-config-form@3.1.37(lodash@4.17.21)(mobx@6.12.0)(react@18.2.0):
-    resolution: {integrity: sha512-odrfQdQVrdnku8bcuyo47BLozfje9I8WKXlbIL3VXYY17i9Un7/ZM2fhpy7XK51gHtgvR8/+czL31mZNQH9Gow==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/dk-react-mobx-config-form/-/dk-react-mobx-config-form-3.1.37.tgz}
-    id: registry.npmjs.org/dk-react-mobx-config-form/3.1.37
+  registry.npmjs.org/dk-react-mobx-config-form@3.1.38(lodash@4.17.21)(mobx@6.12.0)(react@18.2.0):
+    resolution: {integrity: sha512-ipU541Ls4JbO7F44Q60P137vCqpVtSEhTvd5PaNF0KXYTufO+mdH9Lbgx1QJKCYMxHrVLhlv2sCG3hySzrKysw==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/dk-react-mobx-config-form/-/dk-react-mobx-config-form-3.1.38.tgz}
+    id: registry.npmjs.org/dk-react-mobx-config-form/3.1.38
     name: dk-react-mobx-config-form
-    version: 3.1.37
+    version: 3.1.38
     peerDependencies:
       lodash: '*'
       mobx: '*'
@@ -3002,7 +3002,7 @@ packages:
       react: registry.npmjs.org/react@18.2.0
     dev: false
 
-  registry.npmjs.org/dk-react-mobx-globals@3.1.37(dk-localize@3.1.37)(dk-request@3.1.37)(mobx@6.12.0)(react@18.2.0):
+  registry.npmjs.org/dk-react-mobx-globals@3.1.37(dk-localize@3.1.37)(dk-request@3.1.38)(mobx@6.12.0)(react@18.2.0):
     resolution: {integrity: sha512-pQVh+rZem4qn4SsQKrC8U3B0ZcdulCZErHGlMqQIi1mAyItfBS/wHj0UMSN6GK+no03P5p7ZapvJOrDELShqzw==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/dk-react-mobx-globals/-/dk-react-mobx-globals-3.1.37.tgz}
     id: registry.npmjs.org/dk-react-mobx-globals/3.1.37
     name: dk-react-mobx-globals
@@ -3015,7 +3015,7 @@ packages:
     dependencies:
       dk-localize: registry.npmjs.org/dk-localize@3.1.37
       dk-mobx-stateful-fn: registry.npmjs.org/dk-mobx-stateful-fn@3.1.37(mobx@6.12.0)
-      dk-request: registry.npmjs.org/dk-request@3.1.37(lodash@4.17.21)(ts-interface-checker@1.0.2)
+      dk-request: registry.npmjs.org/dk-request@3.1.38(lodash@4.17.21)(ts-interface-checker@1.0.2)
       mobx: registry.npmjs.org/mobx@6.12.0
       react: registry.npmjs.org/react@18.2.0
     dev: false
@@ -3049,16 +3049,16 @@ packages:
       - utf-8-validate
     dev: true
 
-  registry.npmjs.org/dk-request@3.1.37(lodash@4.17.21)(ts-interface-checker@1.0.2):
-    resolution: {integrity: sha512-ET4gLGXWq3LPBXfdb3RDRTq+haUgTYKigGqLtqA8sjM1jAqehq9rC453aEfp5IaZzjhoEv9oiudhHmtZNv0voQ==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/dk-request/-/dk-request-3.1.37.tgz}
-    id: registry.npmjs.org/dk-request/3.1.37
+  registry.npmjs.org/dk-request@3.1.38(lodash@4.17.21)(ts-interface-checker@1.0.2):
+    resolution: {integrity: sha512-pn7Z2kgd9iYydGvIn6cP+HKn8F9Dxaw2UaW6bzoL3Z8mjg5EBr2bH0Znz5pEzuNUKJEk8cgYnGv2XYU0HD/dZA==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/dk-request/-/dk-request-3.1.38.tgz}
+    id: registry.npmjs.org/dk-request/3.1.38
     name: dk-request
-    version: 3.1.37
+    version: 3.1.38
     peerDependencies:
       ts-interface-checker: '*'
     dependencies:
       axios: registry.npmjs.org/axios@1.4.0
-      dk-checker-remove-extraneous: registry.npmjs.org/dk-checker-remove-extraneous@3.1.37(lodash@4.17.21)
+      dk-checker-remove-extraneous: registry.npmjs.org/dk-checker-remove-extraneous@3.1.38(lodash@4.17.21)
       ts-interface-checker: registry.npmjs.org/ts-interface-checker@1.0.2
     transitivePeerDependencies:
       - debug
@@ -5384,29 +5384,6 @@ packages:
       react: registry.npmjs.org/react@18.2.0
       react-dom: registry.npmjs.org/react-dom@18.2.0(react@18.2.0)
       use-sync-external-store: registry.npmjs.org/use-sync-external-store@1.2.0(react@18.2.0)
-    dev: false
-
-  registry.npmjs.org/mobx-react@8.0.0(mobx@6.12.0)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-WKfYrxIDmI/ysmugybfWBFnKC0li4VvLHhfZqn1y5hXkOJ0selFFZ4rO8KHWZljWrzseNGRRqatYX9X4PaDD8A==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/mobx-react/-/mobx-react-8.0.0.tgz}
-    id: registry.npmjs.org/mobx-react/8.0.0
-    name: mobx-react
-    version: 8.0.0
-    deprecated: Broken with React 18.2 + Strict Mode, please stick to 3.*
-    peerDependencies:
-      mobx: ^6.9.0
-      react: ^16.8.0 || ^17 || ^18
-      react-dom: '*'
-      react-native: '*'
-    peerDependenciesMeta:
-      react-dom:
-        optional: true
-      react-native:
-        optional: true
-    dependencies:
-      mobx: registry.npmjs.org/mobx@6.12.0
-      mobx-react-lite: registry.npmjs.org/mobx-react-lite@4.0.5(mobx@6.12.0)(react-dom@18.2.0)(react@18.2.0)
-      react: registry.npmjs.org/react@18.2.0
-      react-dom: registry.npmjs.org/react-dom@18.2.0(react@18.2.0)
     dev: false
 
   registry.npmjs.org/mobx@6.12.0:

@@ -1,18 +1,18 @@
 import { CodeHighlightTabs, CodeHighlightTabsProps } from '@mantine/code-highlight';
 
-import { ConnectedComponent } from 'compSystem/ConnectedComponent';
+import { transformers } from 'compSystem/transformers';
 
 // https://mantine.dev/others/code-highlight/
 
-export class Sh extends ConnectedComponent<CodeHighlightTabsProps & { noExpand?: boolean }> {
-  render() {
-    return (
-      <CodeHighlightTabs
-        code={this.props.code}
-        withExpandButton={!this.props.noExpand}
-        defaultExpanded={Boolean(this.props.noExpand)}
-        maxCollapsedHeight={50}
-      />
-    );
-  }
-}
+export const Sh = transformers.observer(function Sh(
+  props: CodeHighlightTabsProps & { noExpand?: boolean }
+) {
+  return (
+    <CodeHighlightTabs
+      code={props.code}
+      withExpandButton={!props.noExpand}
+      defaultExpanded={Boolean(props.noExpand)}
+      maxCollapsedHeight={50}
+    />
+  );
+});

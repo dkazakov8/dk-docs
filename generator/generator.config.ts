@@ -89,17 +89,6 @@ export const generatorConfigs: TypeGenerateFilesParams['configs'] = [
         importTemplate: ({ moduleName, relativePath }) =>
           `import ${moduleName} from './${relativePath}';\n`,
       },
-      {
-        folder: path.resolve(paths.source, 'comp/modal/lib'),
-        targetFile: path.resolve(paths.source, 'const/modalIds.ts'),
-        childFileOrFolderName: '',
-        exportTemplate: ({ subFoldersOfFiles }) =>
-          `export const modalIds = { ${subFoldersOfFiles
-            .map(({ moduleName }) => `${moduleName}: "${moduleName}"`)
-            .join(', ')} };\n`,
-        importTemplate: () => ``,
-        includeChildrenMask: /^((?!messages\.ts|\.scss|_).)*$/,
-      },
     ],
   },
   {
@@ -144,10 +133,6 @@ export const generatorConfigs: TypeGenerateFilesParams['configs'] = [
       },
       {
         folder: path.resolve(paths.source, 'const'),
-        ...defaultReexportConfig,
-      },
-      {
-        folder: path.resolve(paths.source, 'comp/modal/lib'),
         ...defaultReexportConfig,
       },
       {

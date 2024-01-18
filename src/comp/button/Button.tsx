@@ -1,10 +1,12 @@
-import { MouseEvent, ReactNode, RefObject } from 'react';
+import React, { MouseEvent, ReactNode, RefObject } from 'react';
 import cn from 'classnames';
 
-import { ConnectedComponent } from 'compSystem/ConnectedComponent';
 import { Icon, PropsIcon } from 'comp/icon';
 import { Ripple } from 'comp/ripple';
 import { TypeRouteValues } from 'routes';
+import { AbsViewModel, useStore } from 'hooks/useStore';
+import { TypeGlobals } from 'models';
+import { transformers } from 'compSystem/transformers';
 
 import styles from './Button.scss';
 
@@ -34,7 +36,11 @@ export type PropsButton<T extends TypeRouteValues> = {
   noShadow?: boolean;
 };
 
-export class Button<T extends TypeRouteValues> extends ConnectedComponent<PropsButton<T>> {
+class VM<T extends TypeRouteValues> implements AbsViewModel {
+  constructor(public context: TypeGlobals, public props: PropsButton<T>) {
+    transformers.classToObservable(this, { context: false, props: false }, { autoBind: true });
+  }
+
   get wrapperClassName() {
     const {
       type,
@@ -83,62 +89,66 @@ export class Button<T extends TypeRouteValues> extends ConnectedComponent<PropsB
 
     if (route) void actions.routing.redirectTo({ route, params });
   };
+}
 
-  render() {
-    const {
-      id,
-      hidden,
-      htmlFor,
-      element,
-      iconLeft,
-      iconOnly,
-      children,
-      tabIndex,
-      disabled,
-      iconRight,
-      isLoading,
-      forwardRef,
-      linkRegularSrc,
-    } = this.props;
+export const Button = transformers.observer(function Button<T extends TypeRouteValues>(
+  props: PropsButton<T>
+) {
+  const { vm } = useStore(VM, props);
 
-    if (element === 'submit' && hidden) {
-      return (
-        <div onClick={this.handleClick} className={styles.hidden}>
-          <input type={'submit'} value={''} tabIndex={tabIndex} disabled={disabled} />
-        </div>
-      );
-    }
+  const {
+    id,
+    hidden,
+    htmlFor,
+    element,
+    iconLeft,
+    iconOnly,
+    children,
+    tabIndex,
+    disabled,
+    iconRight,
+    isLoading,
+    forwardRef,
+    linkRegularSrc,
+  } = props;
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    let Element: any = 'div';
-    if (element === 'a') Element = 'a';
-    if (element === 'label') Element = 'label';
-
+  if (element === 'submit' && hidden) {
     return (
-      <Element
-        className={this.wrapperClassName}
-        onClick={this.handleClick}
-        ref={forwardRef}
-        href={linkRegularSrc}
-        htmlFor={htmlFor}
-        id={id}
-      >
-        {Boolean(iconLeft) && <Icon glyph={iconLeft!} className={styles.icon} />}
-
-        {Boolean(iconOnly) && <Icon glyph={iconOnly!} className={styles.icon} />}
-
-        {!isLoading && !iconOnly && <span>{children}</span>}
-
-        {element === 'submit' && (
-          <input type={'submit'} value={''} tabIndex={tabIndex} disabled={disabled} />
-        )}
-
-        {isLoading && <div className={styles.loader} />}
-
-        {Boolean(iconRight) && <Icon glyph={iconRight!} className={styles.icon} />}
-
-        <Ripple rippleClassName={styles.ripple} />
-      </Element>
+      <div onClick={vm.handleClick} className={styles.hidden}>
+        <input type={'submit'} value={''} tabIndex={tabIndex} disabled={disabled} />
+      </div>
     );
   }
-}
+
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  let Element: any = 'div';
+  if (element === 'a') Element = 'a';
+  if (element === 'label') Element = 'label';
+
+  return (
+    <Element
+      className={vm.wrapperClassName}
+      onClick={vm.handleClick}
+      ref={forwardRef}
+      href={linkRegularSrc}
+      htmlFor={htmlFor}
+      id={id}
+    >
+      {Boolean(iconLeft) && <Icon glyph={iconLeft!} className={styles.icon} />}
+
+      {Boolean(iconOnly) && <Icon glyph={iconOnly!} className={styles.icon} />}
+
+      {!isLoading && !iconOnly && <span>{children}</span>}
+
+      {element === 'submit' && (
+        <input type={'submit'} value={''} tabIndex={tabIndex} disabled={disabled} />
+      )}
+
+      {isLoading && <div className={styles.loader} />}
+
+      {Boolean(iconRight) && <Icon glyph={iconRight!} className={styles.icon} />}
+
+      <Ripple rippleClassName={styles.ripple} />
+    </Element>
+  );
+});

@@ -1,48 +1,47 @@
 import { TypeSubmitProps } from 'dk-react-mobx-config-form';
-import { action, makeObservable } from 'mobx';
 
 import { Button } from 'comp/button';
-import { ConnectedComponent } from 'compSystem/ConnectedComponent';
-import { TypeForm, TypeInputSubmitConfig } from 'models';
+import { TypeForm, TypeGlobals, TypeInputSubmitConfig } from 'models';
+import { AbsViewModel, useStore } from 'hooks/useStore';
+import { transformers } from 'compSystem/transformers';
 
-export class Submit<TFormConfig extends TypeForm['TypeFormConfig']> extends ConnectedComponent<
-  TypeSubmitProps<TFormConfig, TypeInputSubmitConfig>
-> {
-  constructor(props: any) {
-    super(props);
-
-    makeObservable(this, {
-      UNSAFE_componentWillMount: action,
-    });
+class VM<TFormConfig extends TypeForm['TypeFormConfig']> implements AbsViewModel {
+  constructor(
+    public context: TypeGlobals,
+    public props: TypeSubmitProps<TFormConfig, TypeInputSubmitConfig>
+  ) {
+    transformers.classToObservable(this, { context: false, props: false }, { autoBind: true });
   }
 
-  UNSAFE_componentWillMount() {
+  beforeMount() {
     const { inputConfig, initialData } = this.props;
 
     const initialInputConfig = {
       id: initialData?.id || inputConfig.id,
       label: initialData?.label || inputConfig.label,
-      buttonProps: initialData?.buttonProps || inputConfig.buttonProps,
     };
 
     Object.assign(inputConfig, initialInputConfig);
   }
-
-  render() {
-    const { inputConfig, formConfig, onClick } = this.props;
-
-    return (
-      <Button
-        {...inputConfig.buttonProps}
-        type={inputConfig.buttonProps?.type || 'blue'}
-        element={'submit'}
-        onClick={onClick}
-        id={inputConfig.id}
-        disabled={inputConfig.disabled}
-        isLoading={inputConfig.buttonProps?.isLoading || formConfig.isSubmitting}
-      >
-        {inputConfig.label}
-      </Button>
-    );
-  }
 }
+
+export const Submit = transformers.observer(function Submit<
+  TFormConfig extends TypeForm['TypeFormConfig']
+>(props: TypeSubmitProps<TFormConfig, TypeInputSubmitConfig>) {
+  useStore(VM, props);
+
+  const { inputConfig, formConfig, onClick } = props;
+
+  return (
+    <Button
+      type={'blue'}
+      element={'submit'}
+      onClick={onClick}
+      id={inputConfig.id}
+      disabled={inputConfig.disabled}
+      isLoading={formConfig.isSubmitting}
+    >
+      {inputConfig.label}
+    </Button>
+  );
+});

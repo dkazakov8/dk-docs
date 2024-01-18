@@ -1,67 +1,78 @@
 /* eslint-disable react/no-set-state, @typescript-eslint/naming-convention */
 
-import { ReactElement } from 'react';
+import React, { ReactElement } from 'react';
 import { getPlainActions, unescapeAllStrings } from 'dk-react-mobx-globals';
 import { restoreState } from 'dk-mobx-restore-state';
+import { IReactionDisposer } from 'mobx';
 
-import { routes, TypeRouteValues } from 'routes';
-import { appendAutorun, getTypedEntries, getTypedKeys, history } from 'utils';
+import { routes } from 'routes';
+import { getTypedEntries, getTypedKeys, history } from 'utils';
 import { env } from 'env';
 import { TypeGlobals } from 'models';
+import { AbsViewModel, useStore } from 'hooks/useStore';
 
 import { transformers } from './transformers';
-import { ConnectedComponent } from './ConnectedComponent';
 
 const modularStorePath = 'pages' as const;
 const logs = env.LOGS_STORE_SETTER;
 const logsCanceledActions = env.LOGS_CANCELED_ACTIONS;
 const initialData = IS_CLIENT ? window.INITIAL_DATA || {} : {};
 
-export class Router extends ConnectedComponent<{}, TypeRouteValues> {
+class VM implements AbsViewModel {
+  autorunDisposers: Array<IReactionDisposer> = [];
+
+  constructor(public context: TypeGlobals) {
+    transformers.classToObservable(
+      this,
+      { context: false, loadedComponent: false, autorunDisposers: false },
+      { autoBind: true }
+    );
+  }
+
   localState: {
     loadedComponentName?: keyof typeof routes;
     loadedComponentPage?: string;
-  } = transformers.observable({
+  } = {
     loadedComponentName: undefined,
     loadedComponentPage: undefined,
-  });
+  };
 
   loadedComponent?: ReactElement;
 
-  UNSAFE_componentWillMount() {
+  beforeMount() {
     this.clearPages();
     this.redirectOnHistoryPop();
-    appendAutorun(this, this.setLoadedComponent);
+    this.autorunDisposers.push(transformers.autorun(() => this.setLoadedComponent()));
   }
 
-  log = (message: string) => {
+  log(message: string) {
     const logsPrefix = '%c[Router]%c';
 
     if (logs) {
       // eslint-disable-next-line no-console
       console.log(`${logsPrefix} ${message}`, ...['color: green', 'color: initial']);
     }
-  };
+  }
 
-  clearPages = () => {
+  clearPages() {
     this.context.store[modularStorePath] = {} as any;
     this.context.actions[modularStorePath] = {} as any;
 
     this.log(
       `"store.${modularStorePath}" and "actions.${modularStorePath}" have been set to empty objects`
     );
-  };
+  }
 
-  logCanceled = (message: string) => {
+  logCanceled(message: string) {
     const logsPrefix = '%c[Router] %c[canceled]%c';
 
     if (logsCanceledActions) {
       // eslint-disable-next-line no-console
       console.log(`${logsPrefix} ${message}`, ...['color: green', 'color: red', 'color: initial']);
     }
-  };
+  }
 
-  cancelExecutingApi = () => {
+  cancelExecutingApi() {
     const apiExecuting = Object.values(this.context.api).filter((apiFn) => apiFn.state.isExecuting);
 
     if (apiExecuting.length) {
@@ -73,9 +84,9 @@ export class Router extends ConnectedComponent<{}, TypeRouteValues> {
 
       this.logCanceled(apiExecuting.map((apiFn) => `api.${apiFn.name}`).join(', '));
     }
-  };
+  }
 
-  cancelExecutingActions = () => {
+  cancelExecutingActions() {
     const pagesObject = this.context.actions[modularStorePath];
 
     const moduleActionsExecuting = getPlainActions(pagesObject as any).filter(
@@ -91,9 +102,9 @@ export class Router extends ConnectedComponent<{}, TypeRouteValues> {
 
       this.logCanceled(moduleActionsExecuting.map((actionFn) => `${actionFn.name}`).join(', '));
     }
-  };
+  }
 
-  redirectOnHistoryPop = () => {
+  redirectOnHistoryPop() {
     const { actions, store } = this.context;
 
     if (!history) return;
@@ -107,9 +118,9 @@ export class Router extends ConnectedComponent<{}, TypeRouteValues> {
 
       void actions.routing.redirectTo({ noHistoryPush: true, pathname: history.location.pathname });
     });
-  };
+  }
 
-  setLoadedComponent = () => {
+  setLoadedComponent() {
     const { loadedComponentName, loadedComponentPage } = this.localState;
     const { actions, store } = this.context;
 
@@ -135,9 +146,9 @@ export class Router extends ConnectedComponent<{}, TypeRouteValues> {
 
       this.setComponent(currentRouteName);
     }
-  };
+  }
 
-  extendStores = (stores: Partial<TypeGlobals['store'][typeof modularStorePath]>) => {
+  extendStores(stores: Partial<TypeGlobals['store'][typeof modularStorePath]>) {
     const { store } = this.context;
 
     if (!stores) return;
@@ -186,9 +197,9 @@ export class Router extends ConnectedComponent<{}, TypeRouteValues> {
         this.log(`"${modularStorePath}" has been deleted from initial object`);
       }
     });
-  };
+  }
 
-  extendActions = (actions: Partial<TypeGlobals['actions'][typeof modularStorePath]>) => {
+  extendActions(actions: Partial<TypeGlobals['actions'][typeof modularStorePath]>) {
     if (!actions) return;
 
     /**
@@ -216,9 +227,9 @@ export class Router extends ConnectedComponent<{}, TypeRouteValues> {
 
       this.log(`actions have been extended with "actions.${modularStorePath}.${actionGroupName}"`);
     });
-  };
+  }
 
-  setComponent = (currentRouteName: keyof typeof routes) => {
+  setComponent(currentRouteName: keyof typeof routes) {
     const componentConfig = routes[currentRouteName];
     const props = 'props' in componentConfig ? componentConfig.props : {};
     const RouteComponent: any = IS_CLIENT ? componentConfig.component : componentConfig.loader;
@@ -235,9 +246,11 @@ export class Router extends ConnectedComponent<{}, TypeRouteValues> {
       this.localState.loadedComponentPage = componentConfig.pageName;
       this.loadedComponent = <RouteComponent {...props} />;
     });
-  };
-
-  render() {
-    return this.localState.loadedComponentName ? this.loadedComponent : null;
   }
 }
+
+export const Router = transformers.observer(function Router() {
+  const { vm } = useStore(VM);
+
+  return vm.localState.loadedComponentName ? vm.loadedComponent || null : null;
+});

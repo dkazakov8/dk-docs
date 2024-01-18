@@ -17,6 +17,11 @@ export const routes = createRouterConfig({
     loader: loadable(() => import('pages/formSubmitComponent') as any),
     params: {},
   },
+  formConfigure: {
+    path: '/form/configure',
+    loader: loadable(() => import('pages/formConfigure') as any),
+    params: {},
+  },
 
   error404: {
     path: '/error404',

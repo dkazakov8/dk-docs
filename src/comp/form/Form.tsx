@@ -1,7 +1,7 @@
-import { ReactMobxForm, PropsReactMobxForm } from 'dk-react-mobx-config-form';
-import { Component } from 'react';
+import { PropsReactMobxForm, ReactMobxForm } from 'dk-react-mobx-config-form';
 
-import { TypeForm, TypeAnyInput, TypeInputSubmitConfig } from 'models';
+import { TypeAnyInput, TypeForm, TypeInputSubmitConfig } from 'models';
+import { transformers } from 'compSystem/transformers';
 
 import { Text } from './inputs/Text';
 import { TextAntd } from './inputs/TextAntd';
@@ -19,10 +19,8 @@ export const componentsMapper: Record<
   textMantine: TextMantine,
 };
 
-export class Form<TFormConfig extends TypeForm['TypeFormConfig']> extends Component<
-  PropsReactMobxForm<TFormConfig>
-> {
-  render() {
-    return <ReactMobxForm componentsMapper={componentsMapper} {...this.props} />;
-  }
-}
+export const Form = transformers.observer(function Form<
+  TFormConfig extends TypeForm['TypeFormConfig']
+>(props: PropsReactMobxForm<TFormConfig>) {
+  return <ReactMobxForm componentsMapper={componentsMapper} {...props} />;
+});

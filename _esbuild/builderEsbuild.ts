@@ -73,6 +73,8 @@ function makeTxtFiles() {
     path.resolve(paths.models, 'form/TypeInputTextMantineConfig.ts'),
     path.resolve(paths.source, 'pages/formTextComponent/examples/ExampleMantineInput.tsx'),
     path.resolve(paths.source, 'pages/formTextComponent/examples/ExampleMantineAllCases.tsx'),
+
+    path.resolve(paths.source, 'pages/formConfigure/examples/ExampleDefault.tsx'),
   ];
 
   files.forEach((p) => {

@@ -1,9 +1,10 @@
-import { createRef, ReactNode } from 'react';
+import React, { createRef, ReactNode } from 'react';
 import cn from 'classnames';
 
-import { ConnectedComponent } from 'compSystem/ConnectedComponent';
 import { transformers } from 'compSystem/transformers';
 import { Button, PropsButton } from 'comp/button';
+import { AbsViewModel, useStore } from 'hooks/useStore';
+import { TypeGlobals } from 'models';
 
 import styles from './Dropdown.scss';
 
@@ -17,10 +18,20 @@ type PropsDropdown = {
   onClose?: (event: MouseEvent, shouldOpen: boolean) => boolean;
 };
 
-export class Dropdown extends ConnectedComponent<PropsDropdown> {
-  localState = transformers.observable({
-    isOpen: false,
-  });
+class VM implements AbsViewModel {
+  constructor(public context: TypeGlobals, public props: PropsDropdown) {
+    transformers.classToObservable(
+      this,
+      { context: false, props: false, ref: false },
+      { autoBind: true }
+    );
+  }
+
+  afterMount() {
+    window.addEventListener('click', this.handleClickOutside);
+  }
+
+  localState = { isOpen: false };
 
   ref = createRef<HTMLDivElement>();
 
@@ -32,7 +43,7 @@ export class Dropdown extends ConnectedComponent<PropsDropdown> {
     window.removeEventListener('click', this.handleClickOutside);
   }
 
-  handleClickOutside = (event: MouseEvent) => {
+  handleClickOutside(event: MouseEvent) {
     const { onClose } = this.props;
     const { isOpen } = this.localState;
 
@@ -41,30 +52,32 @@ export class Dropdown extends ConnectedComponent<PropsDropdown> {
     transformers.batch(
       () => (this.localState.isOpen = onClose ? onClose(event, shouldOpen) : shouldOpen)
     );
-  };
-
-  render() {
-    const { isOpen } = this.localState;
-    const {
-      children,
-      buttonProps,
-      tooltipRight,
-      tooltipContent,
-      wrapperClassName,
-      tooltipClassName,
-    } = this.props;
-
-    return (
-      <div className={cn(styles.buttonWrapper, wrapperClassName)}>
-        <Button {...buttonProps} active={isOpen} forwardRef={this.ref}>
-          {children}
-        </Button>
-        {isOpen && (
-          <div className={cn(styles.tooltip, tooltipRight && styles.right, tooltipClassName)}>
-            {tooltipContent}
-          </div>
-        )}
-      </div>
-    );
   }
 }
+
+export const Dropdown = transformers.observer(function Dropdown(props: PropsDropdown) {
+  const { vm } = useStore(VM, props);
+
+  const { isOpen } = vm.localState;
+  const {
+    children,
+    buttonProps,
+    tooltipRight,
+    tooltipContent,
+    wrapperClassName,
+    tooltipClassName,
+  } = props;
+
+  return (
+    <div className={cn(styles.buttonWrapper, wrapperClassName)}>
+      <Button {...buttonProps} active={isOpen} forwardRef={vm.ref}>
+        {children}
+      </Button>
+      {isOpen && (
+        <div className={cn(styles.tooltip, tooltipRight && styles.right, tooltipClassName)}>
+          {tooltipContent}
+        </div>
+      )}
+    </div>
+  );
+});

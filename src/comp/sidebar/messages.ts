@@ -5,4 +5,5 @@ export const messages = wrapMessages(__dirname, {
   formsGettingStarted: 'Getting started',
   formsTextComponent: 'Define input components',
   formsSubmitComponent: 'Define submit component',
+  formConfigure: 'Configure form',
 });

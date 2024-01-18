@@ -1,7 +1,7 @@
 import cn from 'classnames';
 
-import { ConnectedComponent } from 'compSystem/ConnectedComponent';
 import { icons } from 'assets/icons';
+import { transformers } from 'compSystem/transformers';
 
 import styles from './Icon.scss';
 
@@ -14,24 +14,22 @@ export type PropsIcon = {
   onMouseEnter?: () => void;
 };
 
-export class Icon extends ConnectedComponent<PropsIcon> {
-  render() {
-    const { glyph, className, ...props } = this.props;
+export const Icon = transformers.observer(function Icon(props: PropsIcon) {
+  const { glyph, className, ...rest } = props;
 
-    const iconContent = icons[glyph];
+  const iconContent = icons[glyph];
 
-    if (!iconContent) {
-      console.error(`Icon: no icon for glyph ${glyph}`);
+  if (!iconContent) {
+    console.error(`Icon: no icon for glyph ${glyph}`);
 
-      return null;
-    }
-
-    return (
-      <div
-        {...props}
-        className={cn(styles.icon, className)}
-        dangerouslySetInnerHTML={{ __html: iconContent }}
-      />
-    );
+    return null;
   }
-}
+
+  return (
+    <div
+      {...rest}
+      className={cn(styles.icon, className)}
+      dangerouslySetInnerHTML={{ __html: iconContent }}
+    />
+  );
+});

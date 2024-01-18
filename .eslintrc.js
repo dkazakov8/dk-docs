@@ -53,6 +53,12 @@ eslintConfig.rules = {
 
 eslintConfig.overrides.push(
   {
+    files: ['*.ts', '*.tsx'],
+    rules: {
+      '@typescript-eslint/naming-convention': ['off'],
+    },
+  },
+  {
     files: ['src/api/*'],
     rules: {
       'import/no-restricted-paths': [

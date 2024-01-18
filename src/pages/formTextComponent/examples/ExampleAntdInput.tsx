@@ -1,8 +1,9 @@
 import { FormConfig } from 'dk-react-mobx-config-form';
 
-import { ConnectedComponent } from 'compSystem/ConnectedComponent';
 import { Form } from 'comp/form';
-import { TypeInputTextAntdConfig } from 'models';
+import { TypeGlobals, TypeInputTextAntdConfig } from 'models';
+import { AbsViewModel, useStore } from 'hooks/useStore';
+import { transformers } from 'compSystem/transformers';
 
 import styles from '../FormTextComponent.scss';
 
@@ -20,14 +21,20 @@ const sampleForm = new FormConfig<{
   },
 });
 
-export class ExampleAntdInput extends ConnectedComponent {
-  sampleForm = sampleForm.copy();
-
-  render() {
-    return (
-      <Form formConfig={this.sampleForm} className={styles.form}>
-        {({ inputs }) => inputs.textField}
-      </Form>
-    );
+class VM implements AbsViewModel {
+  constructor(public context: TypeGlobals) {
+    transformers.classToObservable(this, { context: false }, { autoBind: true });
   }
+
+  sampleForm = sampleForm.copy();
 }
+
+export const ExampleAntdInput = transformers.observer(function ExampleAntdInput() {
+  const { vm } = useStore(VM);
+
+  return (
+    <Form formConfig={vm.sampleForm} className={styles.form}>
+      {({ inputs }) => inputs.textField}
+    </Form>
+  );
+});

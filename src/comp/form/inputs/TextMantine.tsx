@@ -1,30 +1,23 @@
 import { ChangeEvent } from 'react';
 import { TypeInputProps } from 'dk-react-mobx-config-form';
 import { values } from 'lodash';
-import { action, makeObservable } from 'mobx';
 import { TextInput } from '@mantine/core';
 
-import { ConnectedComponent } from 'compSystem/ConnectedComponent';
-import { TypeForm, TypeInputTextMantineConfig } from 'models';
+import { TypeForm, TypeGlobals, TypeInputTextMantineConfig } from 'models';
+import { AbsViewModel, useStore } from 'hooks/useStore';
+import { transformers } from 'compSystem/transformers';
 
 import styles from '../Form.scss';
 
-export class TextMantine<TFormConfig extends TypeForm['TypeFormConfig']> extends ConnectedComponent<
-  TypeInputProps<TFormConfig, TypeInputTextMantineConfig>
-> {
-  constructor(props: any) {
-    super(props);
-
-    makeObservable(this, {
-      UNSAFE_componentWillMount: action,
-      isValidFn: action,
-      handleBlur: action,
-      handleFocus: action,
-      handleChange: action,
-    });
+class VM<TFormConfig extends TypeForm['TypeFormConfig']> implements AbsViewModel {
+  constructor(
+    public context: TypeGlobals,
+    public props: TypeInputProps<TFormConfig, TypeInputTextMantineConfig>
+  ) {
+    transformers.classToObservable(this, { context: false, props: false }, { autoBind: true });
   }
 
-  UNSAFE_componentWillMount() {
+  beforeMount() {
     const { inputConfig, name, initialData } = this.props;
 
     Object.assign(inputConfig, {
@@ -71,31 +64,35 @@ export class TextMantine<TFormConfig extends TypeForm['TypeFormConfig']> extends
 
     Object.assign(inputConfig, { value: event.target.value || '' });
   };
-
-  render() {
-    const { name, inputConfig } = this.props;
-
-    return (
-      <div className={styles.inputWrapper}>
-        <TextInput
-          styles={{ root: { width: '100%' } }}
-          id={inputConfig.id}
-          label={inputConfig.label || undefined}
-          name={name}
-          type={'text'}
-          error={
-            inputConfig.errors!.length > 0
-              ? inputConfig.errors!.map((errorObject) => errorObject.message).join(', ')
-              : undefined
-          }
-          value={inputConfig.value}
-          disabled={inputConfig.disabled}
-          placeholder={inputConfig.placeholder}
-          onBlur={this.handleBlur}
-          onFocus={this.handleFocus}
-          onChange={this.handleChange}
-        />
-      </div>
-    );
-  }
 }
+
+export const TextMantine = transformers.observer(function TextMantine<
+  TFormConfig extends TypeForm['TypeFormConfig']
+>(props: TypeInputProps<TFormConfig, TypeInputTextMantineConfig>) {
+  const { vm } = useStore(VM, props);
+
+  const { name, inputConfig } = props;
+
+  return (
+    <div className={styles.inputWrapper}>
+      <TextInput
+        styles={{ root: { width: '100%' } }}
+        id={inputConfig.id}
+        label={inputConfig.label || undefined}
+        name={name}
+        type={'text'}
+        error={
+          inputConfig.errors!.length > 0
+            ? inputConfig.errors!.map((errorObject) => errorObject.message).join(', ')
+            : undefined
+        }
+        value={inputConfig.value}
+        disabled={inputConfig.disabled}
+        placeholder={inputConfig.placeholder}
+        onBlur={vm.handleBlur}
+        onFocus={vm.handleFocus}
+        onChange={vm.handleChange}
+      />
+    </div>
+  );
+});

@@ -1,9 +1,10 @@
 import { FormConfig } from 'dk-react-mobx-config-form';
 
-import { ConnectedComponent } from 'compSystem/ConnectedComponent';
 import { Form } from 'comp/form';
-import { TypeInputTextMantineConfig } from 'models';
+import { TypeGlobals, TypeInputTextMantineConfig } from 'models';
 import { fieldValidators } from 'utils';
+import { AbsViewModel, useStore } from 'hooks/useStore';
+import { transformers } from 'compSystem/transformers';
 
 import styles from '../FormTextComponent.scss';
 
@@ -60,14 +61,20 @@ export const sampleForm = new FormConfig<{
   },
 });
 
-export class ExampleMantineAllCases extends ConnectedComponent {
-  sampleForm = sampleForm.copy();
-
-  render() {
-    return (
-      <Form formConfig={this.sampleForm} className={styles.form}>
-        {({ inputs }) => <>{Object.values(inputs).map((input) => input)}</>}
-      </Form>
-    );
+class VM implements AbsViewModel {
+  constructor(public context: TypeGlobals) {
+    transformers.classToObservable(this, { context: false }, { autoBind: true });
   }
+
+  sampleForm = sampleForm.copy();
 }
+
+export const ExampleMantineAllCases = transformers.observer(function ExampleMantineAllCases() {
+  const { vm } = useStore(VM);
+
+  return (
+    <Form formConfig={vm.sampleForm} className={styles.form}>
+      {({ inputs }) => <>{Object.values(inputs).map((input) => input)}</>}
+    </Form>
+  );
+});

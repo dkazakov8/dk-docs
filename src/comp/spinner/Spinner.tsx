@@ -1,6 +1,6 @@
 import cn from 'classnames';
 
-import { ConnectedComponent } from 'compSystem/ConnectedComponent';
+import { transformers } from 'compSystem/transformers';
 
 import styles from './Spinner.scss';
 
@@ -9,15 +9,13 @@ type PropsSpinner = {
   className?: string;
 };
 
-export class Spinner extends ConnectedComponent<PropsSpinner> {
-  render() {
-    const { className, size } = this.props;
+export const Spinner = transformers.observer(function Spinner(props: PropsSpinner) {
+  const { className, size } = props;
 
-    const style = {
-      width: `${size}px`,
-      height: `${size}px`,
-    };
+  const style = {
+    width: `${size}px`,
+    height: `${size}px`,
+  };
 
-    return <div style={style} className={cn(styles.spinner, className)} />;
-  }
-}
+  return <div style={style} className={cn(styles.spinner, className)} />;
+});

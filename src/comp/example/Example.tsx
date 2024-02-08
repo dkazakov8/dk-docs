@@ -28,7 +28,7 @@ class VM implements AbsViewModel {
   }
 }
 
-export const Example = transformers.observer(function Example(props: PropsExample) {
+export function Example(props: PropsExample) {
   const { vm } = useStore(VM, props);
 
   const { children, code, description } = props;
@@ -63,4 +63,4 @@ export const Example = transformers.observer(function Example(props: PropsExampl
       )}
     </div>
   );
-});
+}

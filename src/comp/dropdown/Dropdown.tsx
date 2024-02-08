@@ -55,7 +55,7 @@ class VM implements AbsViewModel {
   }
 }
 
-export const Dropdown = transformers.observer(function Dropdown(props: PropsDropdown) {
+export function Dropdown(props: PropsDropdown) {
   const { vm } = useStore(VM, props);
 
   const { isOpen } = vm.localState;
@@ -80,4 +80,4 @@ export const Dropdown = transformers.observer(function Dropdown(props: PropsDrop
       )}
     </div>
   );
-});
+}

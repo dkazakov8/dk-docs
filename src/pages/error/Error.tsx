@@ -24,7 +24,7 @@ class VM implements AbsViewModel {
   }
 }
 
-export const Error = transformers.observer(function Error(props: PropsErrorPage) {
+export function Error(props: PropsErrorPage) {
   const { context } = useStore(VM, props);
 
   const { getLn } = context;
@@ -45,4 +45,4 @@ export const Error = transformers.observer(function Error(props: PropsErrorPage)
       <div className={styles.subtitle}>{getLn(messages.error500Subtitle)}</div>
     </div>
   );
-});
+}

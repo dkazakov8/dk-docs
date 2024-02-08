@@ -34,6 +34,8 @@ fs.readdirSync(path.resolve(__dirname, 'src')).forEach((fileName) => {
 });
 
 eslintConfig.rules = {
+  'react/function-component-definition': ['error', { namedComponents: 'function-declaration' }],
+  'react/no-unused-prop-types': ['off'],
   'react/jsx-no-literals': ['off'],
   'import/order': [
     'error',

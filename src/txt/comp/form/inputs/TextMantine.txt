@@ -66,9 +66,9 @@ class VM<TFormConfig extends TypeForm['TypeFormConfig']> implements AbsViewModel
   };
 }
 
-export const TextMantine = transformers.observer(function TextMantine<
-  TFormConfig extends TypeForm['TypeFormConfig']
->(props: TypeInputProps<TFormConfig, TypeInputTextMantineConfig>) {
+export function TextMantine<TFormConfig extends TypeForm['TypeFormConfig']>(
+  props: TypeInputProps<TFormConfig, TypeInputTextMantineConfig>
+) {
   const { vm } = useStore(VM, props);
 
   const { name, inputConfig } = props;
@@ -95,4 +95,4 @@ export const TextMantine = transformers.observer(function TextMantine<
       />
     </div>
   );
-});
+}

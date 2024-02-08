@@ -249,8 +249,8 @@ class VM implements AbsViewModel {
   }
 }
 
-export const Router = transformers.observer(function Router() {
+export function Router() {
   const { vm } = useStore(VM);
 
   return vm.localState.loadedComponentName ? vm.loadedComponent || null : null;
-});
+}

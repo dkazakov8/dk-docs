@@ -1,7 +1,5 @@
 import cn from 'classnames';
 
-import { transformers } from 'compSystem/transformers';
-
 import styles from './Spinner.scss';
 
 type PropsSpinner = {
@@ -9,7 +7,7 @@ type PropsSpinner = {
   className?: string;
 };
 
-export const Spinner = transformers.observer(function Spinner(props: PropsSpinner) {
+export function Spinner(props: PropsSpinner) {
   const { className, size } = props;
 
   const style = {
@@ -18,4 +16,4 @@ export const Spinner = transformers.observer(function Spinner(props: PropsSpinne
   };
 
   return <div style={style} className={cn(styles.spinner, className)} />;
-});
+}

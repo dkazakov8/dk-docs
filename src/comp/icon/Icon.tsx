@@ -1,7 +1,6 @@
 import cn from 'classnames';
 
 import { icons } from 'assets/icons';
-import { transformers } from 'compSystem/transformers';
 
 import styles from './Icon.scss';
 
@@ -14,7 +13,7 @@ export type PropsIcon = {
   onMouseEnter?: () => void;
 };
 
-export const Icon = transformers.observer(function Icon(props: PropsIcon) {
+export function Icon(props: PropsIcon) {
   const { glyph, className, ...rest } = props;
 
   const iconContent = icons[glyph];
@@ -32,4 +31,4 @@ export const Icon = transformers.observer(function Icon(props: PropsIcon) {
       dangerouslySetInnerHTML={{ __html: iconContent }}
     />
   );
-});
+}

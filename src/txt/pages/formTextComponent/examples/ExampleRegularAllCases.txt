@@ -69,7 +69,7 @@ class VM implements AbsViewModel {
   sampleForm = sampleForm.copy();
 }
 
-export const ExampleRegularAllCases = transformers.observer(function ExampleRegularAllCases() {
+export function ExampleRegularAllCases() {
   const { vm } = useStore(VM);
 
   return (
@@ -77,4 +77,4 @@ export const ExampleRegularAllCases = transformers.observer(function ExampleRegu
       {({ inputs }) => <>{Object.values(inputs).map((input) => input)}</>}
     </Form>
   );
-});
+}

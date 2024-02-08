@@ -31,7 +31,7 @@ class VM implements AbsViewModel {
   sampleForm = sampleForm.copy();
 }
 
-export const ExampleDefault = transformers.observer(function ExampleDefault() {
+export function ExampleDefault() {
   const { vm } = useStore(VM);
 
   return (
@@ -47,4 +47,4 @@ export const ExampleDefault = transformers.observer(function ExampleDefault() {
       </div>
     </div>
   );
-});
+}

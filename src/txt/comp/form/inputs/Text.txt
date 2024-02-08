@@ -66,9 +66,9 @@ class VM<TFormConfig extends TypeForm['TypeFormConfig']> implements AbsViewModel
   }
 }
 
-export const Text = transformers.observer(function Text<
-  TFormConfig extends TypeForm['TypeFormConfig']
->(props: TypeInputProps<TFormConfig, TypeInputTextConfig>) {
+export function Text<TFormConfig extends TypeForm['TypeFormConfig']>(
+  props: TypeInputProps<TFormConfig, TypeInputTextConfig>
+) {
   const { vm } = useStore(VM, props);
 
   const { name, inputConfig } = props;
@@ -109,4 +109,4 @@ export const Text = transformers.observer(function Text<
       )}
     </div>
   );
-});
+}

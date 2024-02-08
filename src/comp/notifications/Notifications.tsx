@@ -1,12 +1,11 @@
 import { generateArray } from 'utils';
 import { system } from 'const';
 import { Notification } from 'comp/notifications/Notification';
-import { transformers } from 'compSystem/transformers';
 import { useStore } from 'hooks/useStore';
 
 import styles from './Notifications.scss';
 
-export const Notifications = transformers.observer(function Notifications() {
+export function Notifications() {
   const { context } = useStore();
 
   const { store } = context;
@@ -44,4 +43,4 @@ export const Notifications = transformers.observer(function Notifications() {
       })}
     </div>
   );
-});
+}

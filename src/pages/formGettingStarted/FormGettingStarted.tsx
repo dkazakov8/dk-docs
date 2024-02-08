@@ -19,7 +19,7 @@ class VM implements AbsViewModel {
 }
 
 // eslint-disable-next-line import/no-default-export
-export default transformers.observer(function FormGettingStarted() {
+export default function FormGettingStarted() {
   useStore(VM);
 
   return (
@@ -106,4 +106,4 @@ export default transformers.observer(function FormGettingStarted() {
       </p>
     </div>
   );
-});
+}

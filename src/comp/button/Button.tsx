@@ -91,9 +91,7 @@ class VM<T extends TypeRouteValues> implements AbsViewModel {
   };
 }
 
-export const Button = transformers.observer(function Button<T extends TypeRouteValues>(
-  props: PropsButton<T>
-) {
+export function Button<T extends TypeRouteValues>(props: PropsButton<T>) {
   const { vm } = useStore(VM, props);
 
   const {
@@ -151,4 +149,4 @@ export const Button = transformers.observer(function Button<T extends TypeRouteV
       <Ripple rippleClassName={styles.ripple} />
     </Element>
   );
-});
+}

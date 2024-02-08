@@ -72,7 +72,7 @@ class VM implements AbsViewModel {
   }
 }
 
-export const Notification = transformers.observer(function Notification(props: PropsNotification) {
+export function Notification(props: PropsNotification) {
   const { vm } = useStore(VM, props);
 
   const { status, type, height, message, prevElementsHeight } = props;
@@ -98,4 +98,4 @@ export const Notification = transformers.observer(function Notification(props: P
       </div>
     </div>
   );
-});
+}

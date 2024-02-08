@@ -1,11 +1,10 @@
 import { Button } from 'comp/button';
-import { transformers } from 'compSystem/transformers';
 import { useStore } from 'hooks/useStore';
 
 import styles from './Header.scss';
 import { messages } from './messages';
 
-export const Header = transformers.observer(function Header() {
+export function Header() {
   const { context } = useStore();
 
   const { getLn } = context;
@@ -21,4 +20,4 @@ export const Header = transformers.observer(function Header() {
       </div>
     </div>
   );
-});
+}

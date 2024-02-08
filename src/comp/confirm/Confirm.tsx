@@ -68,7 +68,7 @@ class VM implements AbsViewModel {
   };
 }
 
-export const Confirm = transformers.observer(function Confirm() {
+export function Confirm() {
   const { vm, context } = useStore(VM);
 
   const { store, getLn } = context;
@@ -150,4 +150,4 @@ export const Confirm = transformers.observer(function Confirm() {
       </div>
     </div>
   );
-});
+}

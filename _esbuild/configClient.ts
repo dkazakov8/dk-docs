@@ -69,7 +69,7 @@ export const configClient: BuildOptions = {
     '.ttf': 'file',
   },
   plugins: [
-    pluginReplace({ filter: /\.(tsx?)$/, rootDir: paths.root }),
+    pluginReplace({ filter: /\.(tsx?)$/, rootDir: paths.root, loader: 'tsx' }),
 
     // https://github.com/glromeo/esbuild-sass-plugin
     sassPlugin({ filter: /(global)\.scss$/, type: 'css', loadPaths: ['./src/styles'] }),

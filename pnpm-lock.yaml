@@ -56,9 +56,9 @@ dependencies:
   mobx:
     specifier: 6.12.0
     version: registry.npmjs.org/mobx@6.12.0
-  mobx-react-lite:
-    specifier: 4.0.5
-    version: registry.npmjs.org/mobx-react-lite@4.0.5(mobx@6.12.0)(react-dom@18.2.0)(react@18.2.0)
+  mobx-react:
+    specifier: 9.1.0
+    version: registry.npmjs.org/mobx-react@9.1.0(mobx@6.12.0)(react-dom@18.2.0)(react@18.2.0)
   prop-types:
     specifier: 15.8.1
     version: registry.npmjs.org/prop-types@15.8.1
@@ -122,8 +122,8 @@ devDependencies:
     specifier: 3.1.37
     version: registry.npmjs.org/dk-compare-env@3.1.37
   dk-esbuild-plugin-replace:
-    specifier: 0.0.10
-    version: registry.npmjs.org/dk-esbuild-plugin-replace@0.0.10(esbuild@0.19.8)
+    specifier: 0.0.11
+    version: registry.npmjs.org/dk-esbuild-plugin-replace@0.0.11(esbuild@0.19.8)
   dk-eslint-config:
     specifier: 3.1.17
     version: registry.npmjs.org/dk-eslint-config@3.1.17(typescript@5.0.4)
@@ -2908,11 +2908,11 @@ packages:
       dotenv: registry.npmjs.org/dotenv@16.3.1
     dev: true
 
-  registry.npmjs.org/dk-esbuild-plugin-replace@0.0.10(esbuild@0.19.8):
-    resolution: {integrity: sha512-ol0MGqHcOGZ5KZ8PJJ5Nsx4P/qZC/XFJwNNqQIOr8kFEe5KZIwT17inBK0tew4b/9iQYFGpyDNVpHF71fu9Z5w==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/dk-esbuild-plugin-replace/-/dk-esbuild-plugin-replace-0.0.10.tgz}
-    id: registry.npmjs.org/dk-esbuild-plugin-replace/0.0.10
+  registry.npmjs.org/dk-esbuild-plugin-replace@0.0.11(esbuild@0.19.8):
+    resolution: {integrity: sha512-Ud2Dxu2VOtGMDzHTg1pyQ7dJQT00c3w/OgfQWHcOFfqIbDpM0ohmH8iXeeFnl4lJwzc18eQJXEme7Sz0vMutMg==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/dk-esbuild-plugin-replace/-/dk-esbuild-plugin-replace-0.0.11.tgz}
+    id: registry.npmjs.org/dk-esbuild-plugin-replace/0.0.11
     name: dk-esbuild-plugin-replace
-    version: 0.0.10
+    version: 0.0.11
     engines: {node: '>=16.0.0'}
     peerDependencies:
       esbuild: '*'
@@ -5384,6 +5384,28 @@ packages:
       react: registry.npmjs.org/react@18.2.0
       react-dom: registry.npmjs.org/react-dom@18.2.0(react@18.2.0)
       use-sync-external-store: registry.npmjs.org/use-sync-external-store@1.2.0(react@18.2.0)
+    dev: false
+
+  registry.npmjs.org/mobx-react@9.1.0(mobx@6.12.0)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-DeDRTYw4AlgHw8xEXtiZdKKEnp+c5/jeUgTbTQXEqnAzfkrgYRWP3p3Nv3Whc2CEcM/mDycbDWGjxKokQdlffg==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/mobx-react/-/mobx-react-9.1.0.tgz}
+    id: registry.npmjs.org/mobx-react/9.1.0
+    name: mobx-react
+    version: 9.1.0
+    peerDependencies:
+      mobx: ^6.9.0
+      react: ^16.8.0 || ^17 || ^18
+      react-dom: '*'
+      react-native: '*'
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+      react-native:
+        optional: true
+    dependencies:
+      mobx: registry.npmjs.org/mobx@6.12.0
+      mobx-react-lite: registry.npmjs.org/mobx-react-lite@4.0.5(mobx@6.12.0)(react-dom@18.2.0)(react@18.2.0)
+      react: registry.npmjs.org/react@18.2.0
+      react-dom: registry.npmjs.org/react-dom@18.2.0(react@18.2.0)
     dev: false
 
   registry.npmjs.org/mobx@6.12.0:

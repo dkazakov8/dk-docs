@@ -26,7 +26,7 @@ class VM implements AbsViewModel {
 }
 
 // eslint-disable-next-line import/no-default-export
-export default transformers.observer(function FormTextComponent() {
+export default function FormTextComponent() {
   useStore(VM);
 
   return (
@@ -123,4 +123,4 @@ export default transformers.observer(function FormTextComponent() {
       </Example>
     </div>
   );
-});
+}

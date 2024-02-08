@@ -29,7 +29,7 @@ class VM implements AbsViewModel {
   sampleForm = sampleForm.copy();
 }
 
-export const ExampleMantineInput = transformers.observer(function ExampleMantineInput() {
+export function ExampleMantineInput() {
   const { vm } = useStore(VM);
 
   return (
@@ -37,4 +37,4 @@ export const ExampleMantineInput = transformers.observer(function ExampleMantine
       {({ inputs }) => inputs.textField}
     </Form>
   );
-});
+}

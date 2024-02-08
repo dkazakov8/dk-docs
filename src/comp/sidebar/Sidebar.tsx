@@ -2,13 +2,12 @@ import cn from 'classnames';
 
 import { Link } from 'comp/link';
 import { routes, TypeRouteValues } from 'routes';
-import { transformers } from 'compSystem/transformers';
 import { useStore } from 'hooks/useStore';
 
 import { messages } from './messages';
 import styles from './Sidebar.scss';
 
-export const Sidebar = transformers.observer(function Sidebar() {
+export function Sidebar() {
   const { context } = useStore();
 
   const { store, getLn } = context;
@@ -76,4 +75,4 @@ export const Sidebar = transformers.observer(function Sidebar() {
       })}
     </div>
   );
-});
+}

@@ -5,11 +5,10 @@ import { Confirm } from 'comp/confirm';
 import { Notifications } from 'comp/notifications';
 import { Sidebar } from 'comp/sidebar';
 import { Header } from 'comp/header';
-import { transformers } from 'compSystem/transformers';
 
 import styles from './App.scss';
 
-export const App = transformers.observer(function App() {
+export function App() {
   return (
     <MantineProvider>
       <Header />
@@ -21,4 +20,4 @@ export const App = transformers.observer(function App() {
       <Notifications />
     </MantineProvider>
   );
-});
+}

@@ -108,7 +108,7 @@ class VM implements AbsViewModel {
   }
 }
 
-export const Ripple = transformers.observer(function Ripple(props: PropsRipple) {
+export function Ripple(props: PropsRipple) {
   const { vm } = useStore(VM, props);
 
   return (
@@ -119,4 +119,4 @@ export const Ripple = transformers.observer(function Ripple(props: PropsRipple) 
       {vm.ripples}
     </div>
   );
-});
+}

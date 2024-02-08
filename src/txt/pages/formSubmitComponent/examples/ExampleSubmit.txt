@@ -46,7 +46,7 @@ class VM implements AbsViewModel {
   }
 }
 
-export const ExampleSubmit = transformers.observer(function ExampleSubmit() {
+export function ExampleSubmit() {
   const { vm } = useStore(VM);
 
   return (
@@ -66,4 +66,4 @@ export const ExampleSubmit = transformers.observer(function ExampleSubmit() {
       )}
     </div>
   );
-});
+}

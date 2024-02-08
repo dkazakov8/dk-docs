@@ -33,7 +33,10 @@ class DefaultViewModel implements AbsViewModel {
 export function useStore<TViewModel extends TypeAbsClass>(ViewModel?: TViewModel, props?: any) {
   const context = useContext(StoreContext);
   const [vm] = useState(() => {
-    const instance = new (ViewModel || DefaultViewModel)(context, props);
+    const instance = new (ViewModel || DefaultViewModel)(
+      context,
+      transformers.observable(props || {})
+    );
 
     transformers.batch(() => {
       instance.beforeMount?.();
@@ -50,6 +53,14 @@ export function useStore<TViewModel extends TypeAbsClass>(ViewModel?: TViewModel
       vm.beforeUnmount?.();
     };
   }, []);
+
+  useEffect(() => {
+    if (props) {
+      transformers.batch(() => {
+        Object.assign(vm.props, props);
+      });
+    }
+  }, [props]);
 
   return { context, vm } as { vm: InstanceType<TViewModel>; context: TypeGlobals };
 }

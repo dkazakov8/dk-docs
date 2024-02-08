@@ -25,9 +25,9 @@ class VM<TFormConfig extends TypeForm['TypeFormConfig']> implements AbsViewModel
   }
 }
 
-export const Submit = transformers.observer(function Submit<
-  TFormConfig extends TypeForm['TypeFormConfig']
->(props: TypeSubmitProps<TFormConfig, TypeInputSubmitConfig>) {
+export function Submit<TFormConfig extends TypeForm['TypeFormConfig']>(
+  props: TypeSubmitProps<TFormConfig, TypeInputSubmitConfig>
+) {
   useStore(VM, props);
 
   const { inputConfig, formConfig, onClick } = props;
@@ -44,4 +44,4 @@ export const Submit = transformers.observer(function Submit<
       {inputConfig.label}
     </Button>
   );
-});
+}

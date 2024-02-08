@@ -41,9 +41,7 @@ class VM<T extends TypeRouteValues> implements AbsViewModel {
   };
 }
 
-export const Link = transformers.observer(function Link<T extends TypeRouteValues>(
-  props: PropsLink<T>
-) {
+export function Link<T extends TypeRouteValues>(props: PropsLink<T>) {
   const { vm, context } = useStore(VM, props);
 
   const {
@@ -98,4 +96,4 @@ export const Link = transformers.observer(function Link<T extends TypeRouteValue
       {Boolean(fullUrl) && <meta itemProp={'item'} content={fullUrl!} />}
     </a>
   );
-});
+}

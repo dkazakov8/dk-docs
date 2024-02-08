@@ -69,7 +69,7 @@ class VM implements AbsViewModel {
   sampleForm = sampleForm.copy();
 }
 
-export const ExampleMantineAllCases = transformers.observer(function ExampleMantineAllCases() {
+export function ExampleMantineAllCases() {
   const { vm } = useStore(VM);
 
   return (
@@ -77,4 +77,4 @@ export const ExampleMantineAllCases = transformers.observer(function ExampleMant
       {({ inputs }) => <>{Object.values(inputs).map((input) => input)}</>}
     </Form>
   );
-});
+}

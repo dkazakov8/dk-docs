@@ -40,8 +40,8 @@ class VM implements AbsViewModel {
   };
 }
 
-export const BodyClass = transformers.observer(function BodyClass(props: PropsBodyClass) {
+export function BodyClass(props: PropsBodyClass) {
   useStore(VM, props);
 
   return null;
-});
+}

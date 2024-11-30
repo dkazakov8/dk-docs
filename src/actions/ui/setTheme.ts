@@ -1,4 +1,5 @@
-import { transformers } from 'compSystem/transformers';
+import { runInAction } from 'mobx';
+
 import { themes } from 'const';
 import { TypeAction } from 'models';
 import { LS, setThemeToHTML } from 'utils';
@@ -10,7 +11,7 @@ export const setTheme: TypeAction<TypeParams> = ({ store }, { theme }) => {
 
   const themeObject = themes[theme];
 
-  transformers.batch(() => {
+  runInAction(() => {
     store.ui.currentTheme = theme;
     store.ui.themeParams = themeObject;
   });

@@ -1,48 +1,42 @@
 /* eslint-disable react/no-set-state, @typescript-eslint/naming-convention */
 
-import React, { ReactElement } from 'react';
-import { getPlainActions, unescapeAllStrings } from 'dk-react-mobx-globals';
-import { restoreState } from 'dk-mobx-restore-state';
-import { IReactionDisposer } from 'mobx';
+import React from 'react';
+import { getPlainActions } from 'dk-react-mobx-globals';
+import { Router as RouterMobx } from 'dk-react-mobx-router';
+import { runInAction } from 'mobx';
 
 import { routes } from 'routes';
-import { getTypedEntries, getTypedKeys, history } from 'utils';
+import { getTypedEntries, getTypedKeys } from 'utils';
 import { env } from 'env';
 import { TypeGlobals } from 'models';
-import { AbsViewModel, useStore } from 'hooks/useStore';
+import { useStore, ViewModel } from 'hooks/useStore';
 
-import { transformers } from './transformers';
+import { classToObservableAuto } from './transformers';
 
 const modularStorePath = 'pages' as const;
 const logs = env.LOGS_STORE_SETTER;
 const logsCanceledActions = env.LOGS_CANCELED_ACTIONS;
-const initialData = IS_CLIENT ? window.INITIAL_DATA || {} : {};
 
-class VM implements AbsViewModel {
-  autorunDisposers: Array<IReactionDisposer> = [];
-
+class VM implements ViewModel {
   constructor(public context: TypeGlobals) {
-    transformers.classToObservable(
-      this,
-      { context: false, loadedComponent: false, autorunDisposers: false },
-      { autoBind: true }
-    );
+    classToObservableAuto(__filename, this);
   }
 
-  localState: {
-    loadedComponentName?: keyof typeof routes;
-    loadedComponentPage?: string;
-  } = {
-    loadedComponentName: undefined,
-    loadedComponentPage: undefined,
-  };
+  beforeSetPageComponent(componentConfig: any) {
+    if (componentConfig.store) {
+      this.extendStores({ [componentConfig.pageName!]: componentConfig.store });
+    }
+    if (componentConfig.actions) {
+      this.extendActions({ [componentConfig.pageName!]: componentConfig.actions });
+    }
+  }
 
-  loadedComponent?: ReactElement;
-
-  beforeMount() {
+  beforeUpdatePageComponent() {
+    if (IS_CLIENT) {
+      this.cancelExecutingApi();
+      this.cancelExecutingActions();
+    }
     this.clearPages();
-    this.redirectOnHistoryPop();
-    this.autorunDisposers.push(transformers.autorun(() => this.setLoadedComponent()));
   }
 
   log(message: string) {
@@ -76,7 +70,7 @@ class VM implements AbsViewModel {
     const apiExecuting = Object.values(this.context.api).filter((apiFn) => apiFn.state.isExecuting);
 
     if (apiExecuting.length) {
-      transformers.batch(() => {
+      runInAction(() => {
         apiExecuting.forEach((apiFn) => {
           apiFn.state.isCancelled = true;
         });
@@ -94,7 +88,7 @@ class VM implements AbsViewModel {
     );
 
     if (moduleActionsExecuting.length) {
-      transformers.batch(() => {
+      runInAction(() => {
         moduleActionsExecuting.forEach((actionFn) => {
           actionFn.state.isCancelled = true;
         });
@@ -104,57 +98,12 @@ class VM implements AbsViewModel {
     }
   }
 
-  redirectOnHistoryPop() {
-    const { actions, store } = this.context;
-
-    if (!history) return;
-
-    history.listen((params) => {
-      if (params.action !== 'POP') return;
-
-      if (store.router.previousRoutePathname === params.location.pathname) {
-        transformers.batch(() => store.router.routesHistory.pop());
-      }
-
-      void actions.routing.redirectTo({ noHistoryPush: true, pathname: history.location.pathname });
-    });
-  }
-
-  setLoadedComponent() {
-    const { loadedComponentName, loadedComponentPage } = this.localState;
-    const { actions, store } = this.context;
-
-    const currentRouteName = store.router.currentRoute.name;
-    const currentRoutePage = store.router.currentRoute.pageName;
-
-    if (
-      actions.routing.redirectTo.state.isExecuting ||
-      loadedComponentName === currentRouteName ||
-      loadedComponentPage === currentRoutePage
-    ) {
-      return;
-    }
-
-    if (!loadedComponentName) {
-      this.setComponent(currentRouteName);
-    } else {
-      if (IS_CLIENT) {
-        this.cancelExecutingApi();
-        this.cancelExecutingActions();
-      }
-      this.clearPages();
-
-      this.setComponent(currentRouteName);
-    }
-  }
-
   extendStores(stores: Partial<TypeGlobals['store'][typeof modularStorePath]>) {
     const { store } = this.context;
 
     if (!stores) return;
 
     const pagesObject = store[modularStorePath];
-    const initialPagesData = initialData[modularStorePath];
 
     getTypedKeys(stores).forEach((storeName) => {
       if (pagesObject[storeName]) return;
@@ -169,33 +118,6 @@ class VM implements AbsViewModel {
       pagesObject[storeName] = new stores[storeName]!();
 
       this.log(`store has been extended with "store.${modularStorePath}.${storeName}"`);
-
-      if (initialPagesData) {
-        const storeInitialData = initialPagesData[storeName];
-
-        if (storeInitialData) {
-          restoreState({
-            logs: env.LOGS_RESTORE_INITIAL,
-            target: pagesObject[storeName],
-            source: unescapeAllStrings(storeInitialData),
-            transformers,
-          });
-
-          this.log(
-            `data for "store.${modularStorePath}.${storeName}" has been restored from initial object`
-          );
-        }
-
-        /**
-         * Delete from variable for clear SPA experience on navigation (back/forward)
-         * so when user comes back to the first loaded page he won't see too old data
-         *
-         */
-
-        delete initialData[modularStorePath];
-
-        this.log(`"${modularStorePath}" has been deleted from initial object`);
-      }
     });
   }
 
@@ -228,29 +150,19 @@ class VM implements AbsViewModel {
       this.log(`actions have been extended with "actions.${modularStorePath}.${actionGroupName}"`);
     });
   }
-
-  setComponent(currentRouteName: keyof typeof routes) {
-    const componentConfig = routes[currentRouteName];
-    const props = 'props' in componentConfig ? componentConfig.props : {};
-    const RouteComponent: any = IS_CLIENT ? componentConfig.component : componentConfig.loader;
-
-    if (componentConfig.store) {
-      this.extendStores({ [componentConfig.pageName!]: componentConfig.store });
-    }
-    if (componentConfig.actions) {
-      this.extendActions({ [componentConfig.pageName!]: componentConfig.actions });
-    }
-
-    transformers.batch(() => {
-      this.localState.loadedComponentName = currentRouteName;
-      this.localState.loadedComponentPage = componentConfig.pageName;
-      this.loadedComponent = <RouteComponent {...props} />;
-    });
-  }
 }
 
 export function Router() {
-  const { vm } = useStore(VM);
+  const { context, vm } = useStore(VM);
 
-  return vm.localState.loadedComponentName ? vm.loadedComponent || null : null;
+  return (
+    <RouterMobx
+      routes={routes}
+      redirectTo={context.actions.routing.redirectTo}
+      routerStore={context.store.router}
+      beforeMount={vm.clearPages}
+      beforeSetPageComponent={vm.beforeSetPageComponent}
+      beforeUpdatePageComponent={vm.beforeUpdatePageComponent}
+    />
+  );
 }

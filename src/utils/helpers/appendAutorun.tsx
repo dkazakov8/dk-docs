@@ -1,28 +1,29 @@
-import { IReactionDisposer } from 'mobx';
-import { Component } from 'react';
+import { autorun, isAction } from 'mobx';
 
-import { transformers } from 'compSystem/transformers';
+import { ViewModel } from 'hooks/useStore';
 
-export function appendAutorun(
-  ctx: Component & { autorunDisposers?: Array<IReactionDisposer> },
-  fn: () => void,
-  options?: { throttleTimeout?: number }
-) {
-  const disposer = transformers.autorun(fn, { delay: options?.throttleTimeout || 0 });
+export function appendAutorun(ctx: ViewModel, fn: () => void) {
+  if (isAction(fn)) {
+    console.error(
+      `${ctx.systemFileName ? `${ctx.systemFileName}: ` : ''}appendAutorun: ${
+        fn.name
+      } can not be added, because it is an action. Put it in the exclude section of classToObservableAuto`
+    );
+
+    return;
+  }
 
   if (!ctx.autorunDisposers) {
     Object.defineProperty(ctx, 'autorunDisposers', { value: [] });
   }
 
+  const disposer = autorun(fn);
+
+  if (fn.name) {
+    Object.defineProperty(disposer, 'nameOriginal', {
+      value: fn.name.replace('bound ', ''),
+    });
+  }
+
   ctx.autorunDisposers!.push(disposer);
-
-  const original = ctx.componentWillUnmount ? ctx.componentWillUnmount.bind(ctx) : null;
-
-  Object.defineProperty(ctx, 'componentWillUnmount', {
-    value: function componentWillUnmount() {
-      ctx.autorunDisposers!.forEach((d) => d());
-      if (original) original();
-    },
-    writable: true,
-  });
 }

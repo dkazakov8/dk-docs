@@ -1,15 +1,15 @@
 import { Example } from 'comp/example';
-import { AbsViewModel, useStore } from 'hooks/useStore';
+import { useStore, ViewModel } from 'hooks/useStore';
 import { TypeGlobals } from 'models';
-import { transformers } from 'compSystem/transformers';
+import { classToObservableAuto } from 'compSystem/transformers';
 
 import styles from './FormConfigure.scss';
 import { messages } from './messages';
 import { ExampleDefault } from './examples/ExampleDefault';
 
-class VM implements AbsViewModel {
+class VM implements ViewModel {
   constructor(public context: TypeGlobals) {
-    transformers.classToObservable(this, { context: false }, { autoBind: true });
+    classToObservableAuto(__filename, this);
   }
 
   beforeMount() {

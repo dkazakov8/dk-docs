@@ -1,15 +1,18 @@
-import { AbsViewModel, useStore } from 'hooks/useStore';
+import { ViewModel, useStore } from 'hooks/useStore';
 import { TypeGlobals } from 'models';
-import { transformers } from 'compSystem/transformers';
+import { classToObservableAuto } from 'compSystem/transformers';
 
 type PropsBodyClass = {
   isActive: boolean;
   className: string;
 };
 
-class VM implements AbsViewModel {
-  constructor(public context: TypeGlobals, public props: PropsBodyClass) {
-    transformers.classToObservable(this, { context: false, props: false }, { autoBind: true });
+class VM implements ViewModel {
+  constructor(
+    public context: TypeGlobals,
+    public props: PropsBodyClass
+  ) {
+    classToObservableAuto(__filename, this);
   }
 
   beforeMount() {

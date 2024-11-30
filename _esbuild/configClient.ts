@@ -1,25 +1,27 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
 import path from 'path';
-import fs from 'fs';
 
-import { pluginWebpackAnalyzer } from 'esbuild-plugin-webpack-analyzer';
+import { pluginWebpackAnalyzer } from '@espcom/esbuild-plugin-webpack-analyzer';
 import { postcssModules, sassPlugin } from 'esbuild-sass-plugin';
-import { htmlPlugin } from '@craftamap/esbuild-plugin-html';
-import { compress } from 'esbuild-plugin-compress';
 import { BuildOptions } from 'esbuild';
 import browserslist from 'browserslist';
 import { resolveToEsbuildTarget } from 'esbuild-plugin-browserslist';
-import { pluginReplace } from 'dk-esbuild-plugin-replace';
-import { pluginInjectPreload } from 'esbuild-plugin-inject-preload';
+import {
+  pluginReplace,
+  modifierLodash,
+  modifierDirname,
+  modifierFilename,
+  modifierMobxObserverFC,
+} from '@espcom/esbuild-plugin-replace';
+import { pluginInjectPreload } from '@espcom/esbuild-plugin-inject-preload';
+import { pluginCompress } from '@espcom/esbuild-plugin-compress';
 
 import { excludeFalsy } from '../src/utils/tsUtils/excludeFalsy';
 import { env } from '../env';
 import { paths } from '../paths';
 
-import { pluginLog } from './pluginLog';
-
-const template = fs.readFileSync(path.resolve('./src/templates/templateEs.html'), 'utf-8');
+import { pluginPushToOutput } from './pluginPushToOutput';
 
 export const configClient: BuildOptions = {
   entryPoints: ['src/client.tsx'],
@@ -27,13 +29,14 @@ export const configClient: BuildOptions = {
   logLevel: 'warning',
   format: 'iife',
   publicPath: '/',
-  // assetNames: '[ext]/[name]-[hash]', // not working with compress plugin
-  assetNames: env.FILENAME_HASH ? '[name]-[hash]' : '[name]',
-  chunkNames: env.FILENAME_HASH ? '[name]-[hash]' : '[name]',
+  entryNames: env.FILENAME_HASH ? '[ext]/[name]-[hash]' : '[ext]/[name]',
+  assetNames: env.FILENAME_HASH ? '[ext]/[name]-[hash]' : '[ext]/[name]',
+  chunkNames: env.FILENAME_HASH ? '[ext]/[name]-[hash]' : '[ext]/[name]',
   outdir: paths.build,
-  write: !env.GENERATE_COMPRESSED,
+  write: false,
   metafile: true,
   minify: env.MINIMIZE_CLIENT,
+  keepNames: true,
   treeShaking: true,
   sourcemap: 'linked',
   banner: {
@@ -63,56 +66,73 @@ export const configClient: BuildOptions = {
   resolveExtensions: ['.js', '.ts', '.tsx'],
   loader: {
     '.svg': 'text',
-    '.txt': 'text',
     '.png': 'file',
+    '.gif': 'file',
     '.woff': 'file',
+    '.woff2': 'file',
     '.ttf': 'file',
   },
   plugins: [
-    pluginReplace({ filter: /\.(tsx?)$/, rootDir: paths.root, loader: 'tsx' }),
+    pluginReplace([
+      modifierDirname({ filter: /\.tsx?$/ }),
+      modifierFilename({ filter: /\.tsx?$/ }),
+      modifierLodash({ filter: /\.tsx?$/ }),
+      modifierMobxObserverFC({ filter: /\.tsx?$/ }),
+    ]),
 
     // https://github.com/glromeo/esbuild-sass-plugin
-    sassPlugin({ filter: /(global)\.scss$/, type: 'css', loadPaths: ['./src/styles'] }),
+    sassPlugin({ filter: /global\.scss$/, type: 'css', loadPaths: [paths.styles] }),
     sassPlugin({
       filter: /\.scss$/i,
       type: 'css',
-      loadPaths: ['./src/styles'],
+      loadPaths: [paths.styles],
 
       // https://github.com/madyankin/postcss-modules
       transform: postcssModules({ generateScopedName: '[path][local]' }),
     }),
 
-    // https://github.com/craftamap/esbuild-plugin-html
-    htmlPlugin({
-      files: [
-        {
-          entryPoints: ['src/client.tsx'],
-          filename: 'template.html',
-          scriptLoading: 'defer',
-          define: { env: env.NODE_ENV, commitHash: env.GIT_COMMIT },
-          htmlTemplate: template,
+    pluginInjectPreload([
+      {
+        templatePath: path.resolve(paths.build, 'template.html'),
+        replace: '<!-- ENTRY_CSS --><!-- /ENTRY_CSS -->',
+        // eslint-disable-next-line consistent-return
+        as(filePath) {
+          if (/client([^.]+)?\.css$/.test(filePath)) {
+            return `<link rel="stylesheet" type="text/css" href="${filePath}" />`;
+          }
         },
-      ],
-    }),
-    pluginInjectPreload({
-      ext: '.woff',
-      linkType: 'font',
-      templatePath: path.resolve(paths.build, 'template.html'),
-      replaceString: '<!-- FONT_PRELOAD -->',
-    }),
+      },
+      {
+        templatePath: path.resolve(paths.build, 'template.html'),
+        replace: '<!-- ENTRY_JS --><!-- /ENTRY_JS -->',
+        // eslint-disable-next-line consistent-return
+        as(filePath) {
+          if (/client([^.]+)?\.js$/.test(filePath)) {
+            return `<script src="${filePath}" defer=""></script>`;
+          }
+        },
+      },
+      {
+        templatePath: path.resolve(paths.build, 'template.html'),
+        replace: '<!-- FONT_PRELOAD --><!-- /FONT_PRELOAD -->',
+        // eslint-disable-next-line consistent-return
+        as(filePath) {
+          if (filePath.endsWith('.woff2')) {
+            return `<link as="font" crossorigin="anonymous" href="${filePath}" rel="preload">`;
+          }
+        },
+      },
+    ]),
 
-    // https://github.com/LinbuduLab/esbuild-plugins/tree/main/packages/esbuild-plugin-compress
-    env.GENERATE_COMPRESSED &&
-      compress({
-        gzip: true,
-        gzipOptions: { level: 9 },
-        brotli: true,
-        emitOrigin: true,
-        // https://github.com/micromatch/micromatch
-        exclude: ['!(**/*.@(js|css))'],
-      }),
+    pluginPushToOutput(),
 
-    pluginLog({ name: 'client', watch: env.START_SERVER_AFTER_BUILD && env.HOT_RELOAD }),
+    pluginCompress({
+      gzip: env.GENERATE_COMPRESSED,
+      brotli: env.GENERATE_COMPRESSED,
+      zstd: env.GENERATE_COMPRESSED,
+      level: 'high',
+      extensions: ['.js', '.css'],
+    }),
 
     env.BUNDLE_ANALYZER &&
       pluginWebpackAnalyzer({

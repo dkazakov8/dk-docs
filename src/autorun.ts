@@ -1,9 +1,8 @@
-import { IReactionDisposer } from 'mobx';
+import { autorun, IReactionDisposer } from 'mobx';
 
 import { TypeGlobals } from 'models';
 import { excludeFalsy } from 'utils/tsUtils/excludeFalsy';
 import { messages } from 'utils/messages';
-import { transformers } from 'compSystem/transformers';
 
 function setPageTitle({ store, getLn }: TypeGlobals) {
   /**
@@ -11,7 +10,7 @@ function setPageTitle({ store, getLn }: TypeGlobals) {
    *
    */
 
-  return transformers.autorun(() => {
+  return autorun(() => {
     if (store.ui.currentLanguage) {
       document.title = store.ui.metaData?.title
         ? getLn(store.ui.metaData.title)
@@ -21,7 +20,7 @@ function setPageTitle({ store, getLn }: TypeGlobals) {
 }
 
 function setMobileOrDesktop({ store }: TypeGlobals) {
-  return transformers.autorun(() => {
+  return autorun(() => {
     // eslint-disable-next-line @typescript-eslint/no-magic-numbers
     if (store.ui.screen.width < 1200) document.body.classList.add('mobile');
     else document.body.classList.remove('mobile');

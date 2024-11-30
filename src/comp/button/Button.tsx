@@ -1,23 +1,24 @@
 import React, { MouseEvent, ReactNode, RefObject } from 'react';
 import cn from 'classnames';
+import { TypeRedirectToParams } from 'dk-react-mobx-router';
 
 import { Icon, PropsIcon } from 'comp/icon';
 import { Ripple } from 'comp/ripple';
-import { TypeRouteValues } from 'routes';
-import { AbsViewModel, useStore } from 'hooks/useStore';
+import { useStore, ViewModel } from 'hooks/useStore';
 import { TypeGlobals } from 'models';
-import { transformers } from 'compSystem/transformers';
+import { classToObservableAuto } from 'compSystem/transformers';
+import { routes } from 'routes';
 
 import styles from './Button.scss';
 
-export type PropsButton<T extends TypeRouteValues> = {
-  type: 'grey' | 'white' | 'blue';
+export type PropsButton<TRouteName extends keyof typeof routes> = Partial<
+  TypeRedirectToParams<typeof routes, TRouteName>
+> & {
+  type: 'grey' | 'white' | 'blue' | 'red';
   size?: 'small' | 'medium';
   iconLeft?: PropsIcon['glyph'];
   iconRight?: PropsIcon['glyph'];
-  route?: T;
   active?: boolean;
-  params?: T['params'];
   element?: 'submit' | 'a' | 'label';
   onClick?: (event?: MouseEvent) => undefined | boolean | void;
   iconOnly?: PropsIcon['glyph'];
@@ -36,9 +37,12 @@ export type PropsButton<T extends TypeRouteValues> = {
   noShadow?: boolean;
 };
 
-class VM<T extends TypeRouteValues> implements AbsViewModel {
-  constructor(public context: TypeGlobals, public props: PropsButton<T>) {
-    transformers.classToObservable(this, { context: false, props: false }, { autoBind: true });
+class VM<TRouteName extends keyof typeof routes> implements ViewModel {
+  constructor(
+    public context: TypeGlobals,
+    public props: PropsButton<TRouteName>
+  ) {
+    classToObservableAuto(__filename, this);
   }
 
   get wrapperClassName() {
@@ -79,20 +83,23 @@ class VM<T extends TypeRouteValues> implements AbsViewModel {
     });
   }
 
-  handleClick = (event: MouseEvent) => {
+  handleClick(event: MouseEvent) {
     const { actions } = this.context;
-    const { route, onClick, disabled, params, isLoading } = this.props;
+    const { route, onClick, disabled, isLoading } = this.props;
 
     if (disabled || isLoading) return;
 
     if (onClick && onClick(event) === false) return;
 
-    if (route) void actions.routing.redirectTo({ route, params });
-  };
+    if (route) {
+      // @ts-ignore
+      void actions.routing.redirectTo({ route, params: (this.props as any).params });
+    }
+  }
 }
 
-export function Button<T extends TypeRouteValues>(props: PropsButton<T>) {
-  const { vm } = useStore(VM, props);
+export function Button<TRouteName extends keyof typeof routes>(props: PropsButton<TRouteName>) {
+  const { vm } = useStore(VM<TRouteName>, props);
 
   const {
     id,

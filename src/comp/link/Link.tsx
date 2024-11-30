@@ -1,15 +1,16 @@
 import React, { CSSProperties, MouseEvent, ReactNode, RefObject } from 'react';
-import { replaceDynamicValues } from 'dk-react-mobx-router/dist/utils/replaceDynamicValues';
+import { replaceDynamicValues, TypeRedirectToParams } from 'dk-react-mobx-router';
 
-import { TypeRouteValues } from 'routes';
 import { getWebsiteUrl } from 'utils/getWebsiteUrl';
-import { AbsViewModel, useStore } from 'hooks/useStore';
+import { useStore, ViewModel } from 'hooks/useStore';
 import { TypeGlobals } from 'models';
-import { transformers } from 'compSystem/transformers';
+import { classToObservableAuto } from 'compSystem/transformers';
+import { routes } from 'routes';
 
-type PropsLink<T extends TypeRouteValues> = {
-  route: T;
-  params?: T['params'];
+type PropsLink<TRouteName extends keyof typeof routes> = TypeRedirectToParams<
+  typeof routes,
+  TRouteName
+> & {
   onClick?: (event: MouseEvent) => boolean | undefined | void;
   onContextMenu?: (event: MouseEvent) => boolean | undefined | void;
   children?: ReactNode;
@@ -24,32 +25,35 @@ type PropsLink<T extends TypeRouteValues> = {
   data?: Record<string, any>;
 };
 
-class VM<T extends TypeRouteValues> implements AbsViewModel {
-  constructor(public context: TypeGlobals, public props: PropsLink<T>) {
-    transformers.classToObservable(this, { context: false, props: false }, { autoBind: true });
+class VM<TRouteName extends keyof typeof routes> implements ViewModel {
+  constructor(
+    public context: TypeGlobals,
+    public props: PropsLink<TRouteName>
+  ) {
+    classToObservableAuto(__filename, this);
   }
 
   handleClick = (event: MouseEvent) => {
     const { actions } = this.context;
-    const { route, onClick, params } = this.props;
+    const { route, onClick } = this.props;
 
     event.preventDefault();
 
     if (onClick && onClick(event) === false) return;
 
-    void actions.routing.redirectTo({ route, params });
+    // @ts-ignore
+    void actions.routing.redirectTo({ route, params: (this.props as any).params });
   };
 }
 
-export function Link<T extends TypeRouteValues>(props: PropsLink<T>) {
-  const { vm, context } = useStore(VM, props);
+export function Link<TRouteName extends keyof typeof routes>(props: PropsLink<TRouteName>) {
+  const { vm, context } = useStore(VM<TRouteName>, props);
 
   const {
     id,
     data,
-    route,
+    route: routeName,
     style,
-    params,
     children,
     itemProp,
     itemType,
@@ -60,9 +64,12 @@ export function Link<T extends TypeRouteValues>(props: PropsLink<T>) {
     onContextMenu,
   } = props;
 
-  const pathname = params ? replaceDynamicValues({ routesObject: route, params }) : route.path;
+  const route = routes[routeName];
 
-  let fullUrl = null;
+  const pathname =
+    'params' in props ? replaceDynamicValues({ route, params: props.params }) : route.path;
+
+  let fullUrl = '';
 
   if (addItemProp) {
     const websiteUrl = getWebsiteUrl(context);
@@ -77,6 +84,18 @@ export function Link<T extends TypeRouteValues>(props: PropsLink<T>) {
       dataParams[`data-${key}`] = value;
     });
   }
+
+  let hidden = false;
+
+  try {
+    if ((route as any).beforeEnter) (route as any).beforeEnter({}, context, true);
+
+    hidden = false;
+  } catch (e) {
+    hidden = true;
+  }
+
+  if (hidden) return null;
 
   return (
     <a

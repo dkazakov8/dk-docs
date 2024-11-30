@@ -1,20 +1,19 @@
 import cn from 'classnames';
 import { ChangeEvent } from 'react';
 import { TypeInputProps } from 'dk-react-mobx-config-form';
-import { values } from 'lodash';
 
 import { TypeForm, TypeGlobals, TypeInputTextConfig } from 'models';
-import { AbsViewModel, useStore } from 'hooks/useStore';
-import { transformers } from 'compSystem/transformers';
+import { useStore, ViewModel } from 'hooks/useStore';
+import { classToObservableAuto } from 'compSystem/transformers';
 
 import styles from '../Form.scss';
 
-class VM<TFormConfig extends TypeForm['TypeFormConfig']> implements AbsViewModel {
+class VM<TFormConfig extends TypeForm['TypeFormConfig']> implements ViewModel {
   constructor(
     public context: TypeGlobals,
     public props: TypeInputProps<TFormConfig, TypeInputTextConfig>
   ) {
-    transformers.classToObservable(this, { context: false, props: false }, { autoBind: true });
+    classToObservableAuto(__filename, this);
   }
 
   beforeMount() {
@@ -36,7 +35,7 @@ class VM<TFormConfig extends TypeForm['TypeFormConfig']> implements AbsViewModel
 
     if (inputConfig.disabled) return true;
 
-    const errors = values(inputConfig.validators).filter(({ notValidCheck }) =>
+    const errors = Object.values(inputConfig.validators!).filter(({ notValidCheck }) =>
       notValidCheck({ value: inputConfig.value })
     );
 
@@ -69,7 +68,7 @@ class VM<TFormConfig extends TypeForm['TypeFormConfig']> implements AbsViewModel
 export function Text<TFormConfig extends TypeForm['TypeFormConfig']>(
   props: TypeInputProps<TFormConfig, TypeInputTextConfig>
 ) {
-  const { vm } = useStore(VM, props);
+  const { vm } = useStore(VM<TFormConfig>, props);
 
   const { name, inputConfig } = props;
 

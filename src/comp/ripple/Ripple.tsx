@@ -1,11 +1,10 @@
-import { omit } from 'lodash';
 import cn from 'classnames';
 import React, { createRef } from 'react';
-import { IReactionDisposer } from 'mobx';
+import { runInAction } from 'mobx';
 
-import { transformers } from 'compSystem/transformers';
+import { classToObservableAuto } from 'compSystem/transformers';
 import { generateId } from 'utils';
-import { AbsViewModel, useStore } from 'hooks/useStore';
+import { useStore, ViewModel } from 'hooks/useStore';
 import { TypeGlobals } from 'models';
 
 import styles from './Ripple.scss';
@@ -26,15 +25,12 @@ type TypeRipple = {
 
 const RIPPLE_DURATION = 600;
 
-class VM implements AbsViewModel {
-  autorunDisposers: Array<IReactionDisposer> = [];
-
-  constructor(public context: TypeGlobals, public props: PropsRipple) {
-    transformers.classToObservable(
-      this,
-      { context: false, props: false, autorunDisposers: false, rippleRef: false },
-      { autoBind: true }
-    );
+class VM implements ViewModel {
+  constructor(
+    public context: TypeGlobals,
+    public props: PropsRipple
+  ) {
+    classToObservableAuto(__filename, this, ['rippleRef']);
   }
 
   rippleRef = createRef<HTMLDivElement>();
@@ -57,7 +53,7 @@ class VM implements AbsViewModel {
     const alreadyUsedIds = ripples.map(({ id }) => id);
     const id = generateId({ excludedIds: alreadyUsedIds });
 
-    transformers.batch(() => {
+    runInAction(() => {
       ripples.push({
         id,
         top: event.clientY - rippleContainer.top - halfSize,
@@ -70,7 +66,7 @@ class VM implements AbsViewModel {
 
           if (targetRippleIndex === -1) return;
 
-          transformers.batch(() => ripples.splice(targetRippleIndex, 1));
+          runInAction(() => ripples.splice(targetRippleIndex, 1));
         }, RIPPLE_DURATION),
       });
     });
@@ -98,13 +94,18 @@ class VM implements AbsViewModel {
   get ripples() {
     const { rippleClassName } = this.props;
 
-    return this.localState.ripples.map((ripple) => (
-      <div
-        className={cn(styles.ripple, rippleClassName)}
-        key={ripple.id}
-        style={omit(ripple, ['timeout'])}
-      />
-    ));
+    return this.localState.ripples.map((ripple) => {
+      const style: Omit<TypeRipple, 'timeout'> = {
+        id: ripple.id,
+        top: ripple.top,
+        left: ripple.left,
+        width: ripple.width,
+        height: ripple.height,
+        animationDuration: ripple.animationDuration,
+      };
+
+      return <div className={cn(styles.ripple, rippleClassName)} key={ripple.id} style={style} />;
+    });
   }
 }
 

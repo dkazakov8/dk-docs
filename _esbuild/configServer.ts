@@ -1,12 +1,10 @@
 import path from 'path';
 
 import { BuildOptions } from 'esbuild';
-import { pluginReplace } from 'dk-esbuild-plugin-replace';
+import { modifierDirname, modifierFilename, pluginReplace } from '@espcom/esbuild-plugin-replace';
 
+import { excludeFalsy } from '../src/utils/tsUtils/excludeFalsy';
 import { env } from '../env';
-import { paths } from '../paths';
-
-import { pluginLog } from './pluginLog';
 
 export const configServer: BuildOptions = {
   entryPoints: ['src/server.tsx'],
@@ -26,10 +24,9 @@ export const configServer: BuildOptions = {
     PATH_SEP: JSON.stringify(path.sep),
   },
   plugins: [
-    pluginReplace({
-      filter: /\.(tsx?)$/,
-      rootDir: paths.root,
-    }),
-    pluginLog({ name: 'server', watch: env.START_SERVER_AFTER_BUILD && env.HOT_RELOAD }),
-  ],
+    pluginReplace([
+      modifierDirname({ filter: /\.tsx?$/ }),
+      modifierFilename({ filter: /\.tsx?$/ }),
+    ]),
+  ].filter(excludeFalsy),
 };

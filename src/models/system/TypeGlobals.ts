@@ -1,5 +1,7 @@
 import { getLn } from 'dk-localize';
 import { TypeActionGenerator, TypeGlobalsGenerator } from 'dk-react-mobx-globals';
+import { TypeRedirectToParams } from 'dk-react-mobx-router';
+import { TypeFnState } from 'dk-mobx-stateful-fn';
 
 // eslint-disable-next-line import/no-restricted-paths
 import * as modularStores from 'modularStores';
@@ -9,6 +11,8 @@ import globalActions from 'actions';
 import * as modularActions from 'modularActions';
 // eslint-disable-next-line import/no-restricted-paths
 import * as staticStores from 'stores';
+// eslint-disable-next-line import/no-restricted-paths
+import { routes } from 'routes';
 
 /**
  * Actions
@@ -41,10 +45,21 @@ export type TypeGlobals = TypeGlobalsGenerator<
   any,
   typeof staticStores,
   { pages: typeof modularStores },
-  typeof globalActions,
+  Omit<typeof globalActions, 'routing'> & {
+    routing: Omit<(typeof globalActions)['routing'], 'redirectTo'>;
+  },
   { pages: typeof modularActions },
   typeof getLn
->;
+> & {
+  actions: {
+    routing: {
+      redirectTo: (<TRouteName extends keyof typeof routes>(
+        params: TypeRedirectToParams<typeof routes, TRouteName>
+      ) => Promise<void>) &
+        TypeFnState;
+    };
+  };
+};
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/consistent-type-definitions,@typescript-eslint/naming-convention

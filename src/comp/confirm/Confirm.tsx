@@ -1,34 +1,29 @@
 import cn from 'classnames';
 import React, { createRef, MouseEventHandler } from 'react';
-import { IReactionDisposer } from 'mobx';
 
 import { Button } from 'comp/button';
 import { system } from 'const';
 import { BodyClass } from 'comp/bodyClass';
 import { Icon } from 'comp/icon';
-import { AbsViewModel, useStore } from 'hooks/useStore';
+import { useStore, ViewModel } from 'hooks/useStore';
 import { TypeGlobals } from 'models';
-import { transformers } from 'compSystem/transformers';
+import { classToObservableAuto } from 'compSystem/transformers';
+import { appendAutorun } from 'utils';
 
 import { messages } from './messages';
 import styles from './Confirm.scss';
 
 const transitionDuration = `${system.MODALS_LEAVING_TIMEOUT}ms`;
 
-class VM implements AbsViewModel {
-  autorunDisposers: Array<IReactionDisposer> = [];
+class VM implements ViewModel {
   modalRef = createRef<HTMLDivElement>();
 
   constructor(public context: TypeGlobals) {
-    transformers.classToObservable(
-      this,
-      { context: false, modalRef: false, autorunDisposers: false },
-      { autoBind: true }
-    );
+    classToObservableAuto(__filename, this, ['modalRef', 'beforeOpen']);
   }
 
   beforeMount() {
-    this.autorunDisposers.push(transformers.autorun(() => this.beforeOpen()));
+    appendAutorun(this, this.beforeOpen);
   }
 
   beforeOpen() {

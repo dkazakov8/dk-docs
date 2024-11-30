@@ -1,10 +1,10 @@
 import { TypeTranslations } from 'dk-localize';
 import { TypeThemes } from 'dk-file-generator/dist/src/plugins/theme/types';
 
-import { transformers } from 'compSystem/transformers';
+import { classToObservableAuto } from 'compSystem/transformers';
 import { themes } from 'const';
 import { getTypedKeys, LS } from 'utils';
-import { TypeConfirm, TypeMetaData, TypeNotification, TypeLanguage } from 'models';
+import { TypeConfirm, TypeLanguage, TypeMetaData, TypeNotification } from 'models';
 
 // eslint-disable-next-line import/no-default-export
 export default class StoreUi {
@@ -20,7 +20,7 @@ export default class StoreUi {
   contextMenuOpened = false;
 
   constructor() {
-    transformers.classToObservable(this);
+    classToObservableAuto(__filename, this);
   }
 
   get isMobile() {

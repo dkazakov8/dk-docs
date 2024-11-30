@@ -21,31 +21,29 @@
  */
 import React, { createRef } from 'react';
 import cn from 'classnames';
-import { IReactionDisposer } from 'mobx';
+import { runInAction } from 'mobx';
 
-import { transformers } from 'compSystem/transformers';
+import { classToObservableAuto } from 'compSystem/transformers';
 import styles from 'comp/notifications/Notifications.scss';
 import { Icon } from 'comp/icon';
 import { TypeGlobals, TypeNotification } from 'models';
-import { AbsViewModel, useStore } from 'hooks/useStore';
+import { useStore, ViewModel } from 'hooks/useStore';
+import { appendAutorun } from 'utils';
 
 type PropsNotification = Omit<TypeNotification, 'delay'> & {
   prevElementsHeight: number;
 };
 
-class VM implements AbsViewModel {
-  autorunDisposers: Array<IReactionDisposer> = [];
-
-  constructor(public context: TypeGlobals, public props: PropsNotification) {
-    transformers.classToObservable(
-      this,
-      { context: false, props: false, autorunDisposers: false, ref: false },
-      { autoBind: true }
-    );
+class VM implements ViewModel {
+  constructor(
+    public context: TypeGlobals,
+    public props: PropsNotification
+  ) {
+    classToObservableAuto(__filename, this, ['ref', 'trackHeight']);
   }
 
   afterMount() {
-    this.autorunDisposers.push(transformers.autorun(() => this.trackHeight()));
+    appendAutorun(this, this.trackHeight);
   }
 
   ref = createRef<HTMLDivElement>();
@@ -59,7 +57,7 @@ class VM implements AbsViewModel {
 
     if (store.ui.screen.width == null || !notificationObservable) return;
 
-    transformers.batch(() => {
+    runInAction(() => {
       notificationObservable.height = this.ref.current!.offsetHeight;
     });
   }

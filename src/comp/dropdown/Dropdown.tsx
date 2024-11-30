@@ -1,9 +1,10 @@
 import React, { createRef, ReactNode } from 'react';
 import cn from 'classnames';
+import { runInAction } from 'mobx';
 
-import { transformers } from 'compSystem/transformers';
+import { classToObservableAuto } from 'compSystem/transformers';
 import { Button, PropsButton } from 'comp/button';
-import { AbsViewModel, useStore } from 'hooks/useStore';
+import { useStore, ViewModel } from 'hooks/useStore';
 import { TypeGlobals } from 'models';
 
 import styles from './Dropdown.scss';
@@ -18,13 +19,12 @@ type PropsDropdown = {
   onClose?: (event: MouseEvent, shouldOpen: boolean) => boolean;
 };
 
-class VM implements AbsViewModel {
-  constructor(public context: TypeGlobals, public props: PropsDropdown) {
-    transformers.classToObservable(
-      this,
-      { context: false, props: false, ref: false },
-      { autoBind: true }
-    );
+class VM implements ViewModel {
+  constructor(
+    public context: TypeGlobals,
+    public props: PropsDropdown
+  ) {
+    classToObservableAuto(__filename, this, ['ref']);
   }
 
   afterMount() {
@@ -49,9 +49,7 @@ class VM implements AbsViewModel {
 
     const shouldOpen = Boolean(!isOpen && this.ref?.current?.contains(event.target as Node));
 
-    transformers.batch(
-      () => (this.localState.isOpen = onClose ? onClose(event, shouldOpen) : shouldOpen)
-    );
+    runInAction(() => (this.localState.isOpen = onClose ? onClose(event, shouldOpen) : shouldOpen));
   }
 }
 

@@ -1,19 +1,17 @@
-import { configure } from 'mobx';
+import { configure, toJS } from 'mobx';
 import { errorActionCanceledName } from 'dk-react-mobx-globals';
-
-import { transformers } from 'compSystem/transformers';
 
 function createConsoleJsLogger() {
   // eslint-disable-next-line no-console
   console.js = function consoleJsCustom(...args: Array<any>) {
     // eslint-disable-next-line no-console
-    console.log(...args.map((arg) => transformers.toJS(arg)));
+    console.log(...args.map((arg) => toJS(arg)));
   };
 
   // eslint-disable-next-line no-console
   console.jsf = function consoleJsCustom(...args: Array<any>) {
     // eslint-disable-next-line no-console
-    if (IS_CLIENT) console.log(...args.map((arg) => transformers.toJS(arg)));
+    if (IS_CLIENT) console.log(...args.map((arg) => toJS(arg)));
   };
 }
 

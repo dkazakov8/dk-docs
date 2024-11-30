@@ -1,9 +1,9 @@
 import React, { ReactNode } from 'react';
 
 import { Button } from 'comp/button';
-import { transformers } from 'compSystem/transformers';
+import { classToObservableAuto } from 'compSystem/transformers';
 import { Sh } from 'comp/sh';
-import { AbsViewModel, useStore } from 'hooks/useStore';
+import { useStore, ViewModel } from 'hooks/useStore';
 import { TypeGlobals } from 'models';
 
 import styles from './Example.scss';
@@ -14,9 +14,12 @@ type PropsExample = {
   description?: string;
 };
 
-class VM implements AbsViewModel {
-  constructor(public context: TypeGlobals, public props: PropsExample) {
-    transformers.classToObservable(this, { context: false, props: false }, { autoBind: true });
+class VM implements ViewModel {
+  constructor(
+    public context: TypeGlobals,
+    public props: PropsExample
+  ) {
+    classToObservableAuto(__filename, this);
   }
 
   localState = {

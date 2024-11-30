@@ -63,7 +63,8 @@ export function Sidebar() {
               return (
                 <Link
                   key={childConfig.title}
-                  route={childConfig.route}
+                  route={childConfig.route.name}
+                  params={{}}
                   className={cn(styles.secondTitle, activeByRoute && styles.active)}
                 >
                   {childConfig.title}

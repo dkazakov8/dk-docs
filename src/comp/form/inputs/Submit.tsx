@@ -2,15 +2,15 @@ import { TypeSubmitProps } from 'dk-react-mobx-config-form';
 
 import { Button } from 'comp/button';
 import { TypeForm, TypeGlobals, TypeInputSubmitConfig } from 'models';
-import { AbsViewModel, useStore } from 'hooks/useStore';
-import { transformers } from 'compSystem/transformers';
+import { useStore, ViewModel } from 'hooks/useStore';
+import { classToObservableAuto } from 'compSystem/transformers';
 
-class VM<TFormConfig extends TypeForm['TypeFormConfig']> implements AbsViewModel {
+class VM<TFormConfig extends TypeForm['TypeFormConfig']> implements ViewModel {
   constructor(
     public context: TypeGlobals,
     public props: TypeSubmitProps<TFormConfig, TypeInputSubmitConfig>
   ) {
-    transformers.classToObservable(this, { context: false, props: false }, { autoBind: true });
+    classToObservableAuto(__filename, this);
   }
 
   beforeMount() {

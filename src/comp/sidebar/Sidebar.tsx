@@ -23,10 +23,10 @@ export function Sidebar() {
     }>;
   }> = [
     {
-      title: getLn(messages.forms),
+      title: 'Основы работы',
       children: [
         {
-          title: getLn(messages.formsGettingStarted),
+          title: 'Установка и настройка',
           route: routes.formGettingStarted,
           activeOn: [routes.formGettingStarted],
         },

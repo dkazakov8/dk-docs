@@ -16,6 +16,7 @@ import { generatorConfigs } from '../generator/generator.config';
 import { configServer } from './configServer';
 import { configClient } from './configClient';
 import { logBuildTime } from './logBuildTime';
+import { makeTextFiles } from './makeTextFiles';
 
 process.title = 'node: Esbuild builder';
 
@@ -28,44 +29,6 @@ process.title = 'node: Esbuild builder';
 let serverProcess: ReturnType<typeof betterSpawn>;
 let reloadServerProcess: ReturnType<typeof betterSpawn>;
 let sendReload: (() => void) | undefined;
-
-function makeTxtFiles() {
-  const files = [
-    path.resolve(paths.models, 'form/TypeFieldValidator.ts'),
-    path.resolve(paths.models, 'form/TypeFormConfig.ts'),
-    path.resolve(paths.utils, 'form/fieldValidators.ts'),
-    path.resolve(paths.source, 'comp/form/Form.tsx'),
-
-    path.resolve(paths.source, 'comp/form/inputs/Submit.tsx'),
-    path.resolve(paths.models, 'form/TypeInputSubmitConfig.ts'),
-    path.resolve(paths.source, 'pages/formSubmitComponent/examples/ExampleSubmit.tsx'),
-
-    path.resolve(paths.source, 'comp/form/inputs/Text.tsx'),
-    path.resolve(paths.models, 'form/TypeInputTextConfig.ts'),
-    path.resolve(paths.source, 'pages/formTextComponent/examples/ExampleRegularInput.tsx'),
-    path.resolve(paths.source, 'pages/formTextComponent/examples/ExampleRegularAllCases.tsx'),
-
-    path.resolve(paths.source, 'comp/form/inputs/TextAntd.tsx'),
-    path.resolve(paths.models, 'form/TypeInputTextAntdConfig.ts'),
-    path.resolve(paths.source, 'pages/formTextComponent/examples/ExampleAntdInput.tsx'),
-    path.resolve(paths.source, 'pages/formTextComponent/examples/ExampleAntdAllCases.tsx'),
-
-    path.resolve(paths.source, 'comp/form/inputs/TextMantine.tsx'),
-    path.resolve(paths.models, 'form/TypeInputTextMantineConfig.ts'),
-    path.resolve(paths.source, 'pages/formTextComponent/examples/ExampleMantineInput.tsx'),
-    path.resolve(paths.source, 'pages/formTextComponent/examples/ExampleMantineAllCases.tsx'),
-
-    path.resolve(paths.source, 'pages/formConfigure/examples/ExampleDefault.tsx'),
-  ];
-
-  files.forEach((p) => {
-    const content = fs.readFileSync(p, 'utf-8');
-    fsExtra.outputFileSync(
-      path.resolve(paths.source, 'txt', path.relative(paths.source, p).replace(/\.tsx?/, '.txt')),
-      content
-    );
-  });
-}
 
 function afterFirstBuild() {
   fsExtra.copySync(path.resolve(paths.source, 'templates'), paths.build, { overwrite: false });
@@ -140,7 +103,7 @@ Promise.resolve()
       parsedEnvKeys: Object.keys(env),
     })
   )
-  .then(makeTxtFiles)
+  .then(makeTextFiles)
   .then(() =>
     generateFiles({
       configs: generatorConfigs,
@@ -154,7 +117,7 @@ Promise.resolve()
               changedFilesLogs: true,
               aggregationTimeout: env.GENERATOR_AGGREGATION_TIMEOUT,
               onFinish: () => {
-                makeTxtFiles();
+                makeTextFiles();
 
                 void Promise.all([
                   logBuildTime({ name: 'server' }, serverContext.rebuild),

@@ -13,6 +13,14 @@ export function makeTextFiles() {
     path.resolve(paths.source, 'pages/formGettingStarted/examples/Text.tsx'),
     path.resolve(paths.source, 'pages/formGettingStarted/examples/ExampleBasic.tsx'),
 
+    path.resolve(paths.source, 'pages/formTextComponent/examples/Form.tsx'),
+    path.resolve(paths.source, 'pages/formTextComponent/examples/Text.tsx'),
+    path.resolve(paths.source, 'pages/formTextComponent/examples/TextAntd.tsx'),
+    path.resolve(paths.source, 'pages/formTextComponent/examples/TextMantine.tsx'),
+    path.resolve(paths.source, 'pages/formTextComponent/examples/ExampleRegularAllCases.tsx'),
+    path.resolve(paths.source, 'pages/formTextComponent/examples/ExampleAntdAllCases.tsx'),
+    path.resolve(paths.source, 'pages/formTextComponent/examples/ExampleMantineAllCases.tsx'),
+
     // Old
 
     path.resolve(paths.models, 'form/TypeFieldValidator.ts'),
@@ -26,18 +34,12 @@ export function makeTextFiles() {
 
     path.resolve(paths.source, 'comp/form/inputs/Text.tsx'),
     path.resolve(paths.models, 'form/TypeInputTextConfig.ts'),
-    path.resolve(paths.source, 'pages/formTextComponent/examples/ExampleRegularInput.tsx'),
-    path.resolve(paths.source, 'pages/formTextComponent/examples/ExampleRegularAllCases.tsx'),
 
     path.resolve(paths.source, 'comp/form/inputs/TextAntd.tsx'),
     path.resolve(paths.models, 'form/TypeInputTextAntdConfig.ts'),
-    path.resolve(paths.source, 'pages/formTextComponent/examples/ExampleAntdInput.tsx'),
-    path.resolve(paths.source, 'pages/formTextComponent/examples/ExampleAntdAllCases.tsx'),
 
     path.resolve(paths.source, 'comp/form/inputs/TextMantine.tsx'),
     path.resolve(paths.models, 'form/TypeInputTextMantineConfig.ts'),
-    path.resolve(paths.source, 'pages/formTextComponent/examples/ExampleMantineInput.tsx'),
-    path.resolve(paths.source, 'pages/formTextComponent/examples/ExampleMantineAllCases.tsx'),
 
     path.resolve(paths.source, 'pages/formConfigure/examples/ExampleDefault.tsx'),
   ];

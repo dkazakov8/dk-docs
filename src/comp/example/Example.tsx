@@ -12,6 +12,7 @@ type PropsExample = {
   code: string;
   children: ReactNode;
   description?: string;
+  openDefault?: boolean;
 };
 
 class VM implements ViewModel {
@@ -20,6 +21,8 @@ class VM implements ViewModel {
     public props: PropsExample
   ) {
     classToObservableAuto(__filename, this);
+
+    this.localState.codeOpen = this.props.openDefault || false;
   }
 
   localState = {

@@ -1,12 +1,12 @@
 import { FormConfig } from 'dk-react-mobx-config-form';
+import { useState } from 'react';
 
-import { Form } from 'comp/form';
-import { TypeGlobals, TypeInputTextConfig } from 'models';
 import { fieldValidators } from 'utils';
-import { useStore, ViewModel } from 'hooks/useStore';
-import { classToObservableAuto } from 'compSystem/transformers';
 
 import styles from '../FormTextComponent.scss';
+
+import { TypeInputTextConfig } from './Text';
+import { Form } from './Form';
 
 export const sampleForm = new FormConfig<{
   inputs: Record<
@@ -61,19 +61,11 @@ export const sampleForm = new FormConfig<{
   },
 });
 
-class VM implements ViewModel {
-  constructor(public context: TypeGlobals) {
-    classToObservableAuto(__filename, this);
-  }
-
-  sampleForm = sampleForm.copy();
-}
-
 export function ExampleRegularAllCases() {
-  const { vm } = useStore(VM);
+  const [formConfig] = useState(() => sampleForm.copy());
 
   return (
-    <Form formConfig={vm.sampleForm} className={styles.form}>
+    <Form formConfig={formConfig} className={styles.form}>
       {({ inputs }) => <>{Object.values(inputs).map((input) => input)}</>}
     </Form>
   );

@@ -1,9 +1,0 @@
-@import "mixins.scss";
-
-.buttonWrapper {
-  position: relative;
-}
-
-.tooltip {
-  @include tooltip;
-}

@@ -37,6 +37,7 @@ eslintConfig.rules = {
   'react/function-component-definition': ['error', { namedComponents: 'function-declaration' }],
   'react/no-unused-prop-types': ['off'],
   'react/jsx-no-literals': ['off'],
+  'react/no-unescaped-entities': ['off'],
   'import/order': [
     'error',
     {

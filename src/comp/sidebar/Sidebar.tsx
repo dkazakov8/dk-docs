@@ -31,7 +31,7 @@ export function Sidebar() {
           activeOn: [routes.formGettingStarted],
         },
         {
-          title: getLn(messages.formsTextComponent),
+          title: 'Продвинутый инпут + Mantine + Antd',
           route: routes.formTextComponent,
           activeOn: [routes.formTextComponent],
         },

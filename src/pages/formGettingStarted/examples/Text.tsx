@@ -18,21 +18,19 @@ export const Text = observer(function Text<TFormConfig extends TypeForm['TypeFor
 ) {
   const { name, inputConfig } = props;
 
-  const { id, label, value } = inputConfig;
-
   return (
     <div className={styles.inputWrapper}>
-      {Boolean(label) && <label htmlFor={id}>{label!}</label>}
+      {Boolean(inputConfig.label) && <label htmlFor={inputConfig.id}>{inputConfig.label!}</label>}
 
       <div className={styles.inputInner}>
         <input
-          id={id}
+          id={inputConfig.id}
           name={name}
           type={'text'}
-          value={value}
+          value={inputConfig.value}
           onChange={(event) => {
             runInAction(() => {
-              Object.assign(inputConfig, { value: event.target.value || '' });
+              inputConfig.value = event.target.value || '';
             });
           }}
         />

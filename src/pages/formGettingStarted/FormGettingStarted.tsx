@@ -3,6 +3,7 @@ import { useStore, ViewModel } from 'hooks/useStore';
 import { TypeGlobals } from 'models';
 import { classToObservableAuto } from 'compSystem/transformers';
 import { Example } from 'comp/example';
+import { Link } from 'comp/link';
 
 import styles from './FormGettingStarted.scss';
 import { messages } from './messages';
@@ -26,7 +27,7 @@ export default function FormGettingStarted() {
 
   return (
     <div className={styles.wrapper}>
-      <h1>Начало работы</h1>
+      <h1>Установка и настройка</h1>
       <p>
         Данный компонент для форм - скорее паттерн для проектирования форм в связке React+MobX, чем
         полноценная библиотека. Она не содержит большого количества функционала и позволяет
@@ -85,16 +86,20 @@ export default function FormGettingStarted() {
 
       <p>3. Осталось создать FormConfig и вывести форму</p>
 
-      <Example
-        code={require('txt/pages/formGettingStarted/examples/ExampleBasic.txt')}
-        description={'Базовый вывод'}
-      >
+      <Example code={require('txt/pages/formGettingStarted/examples/ExampleBasic.txt')} openDefault>
         <ExampleBasic />
       </Example>
 
       <p>
         Создание TS-типов может выглядеть перегруженным, но это разовая операция, и типы (TypeForm и
         componentsMapper) нужно будет расширять только при добавлении новых инпутов.
+      </p>
+
+      <p>
+        Далее посмотрим, как реализовать более приближенный к реальности{' '}
+        <Link route={'formTextComponent'} params={{}}>
+          пример Text инпута
+        </Link>
       </p>
       {/*
           <h2>Настройка TypeScript</h2>

@@ -2,6 +2,6 @@
 // This file is auto-generated
 
 export * from './appendAutorun';
-export * from './generateArray';
 export * from './generateId';
 export * from './promiseDelay';
+export * from './setThemeToHTML';

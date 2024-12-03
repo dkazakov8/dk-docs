@@ -4,7 +4,7 @@ import { TypeThemes } from 'dk-file-generator/dist/src/plugins/theme/types';
 import { classToObservableAuto } from 'compSystem/transformers';
 import { themes } from 'const';
 import { getTypedKeys, LS } from 'utils';
-import { TypeConfirm, TypeLanguage, TypeMetaData, TypeNotification } from 'models';
+import { TypeLanguage, TypeMetaData } from 'models';
 
 // eslint-disable-next-line import/no-default-export
 export default class StoreUi {
@@ -15,9 +15,6 @@ export default class StoreUi {
   themesList = getTypedKeys(themes);
   metaData: TypeMetaData = {};
   screen = { width: 0, height: 0, scrollTop: 0 };
-  confirm?: TypeConfirm = undefined;
-  notifications: Array<TypeNotification> = [];
-  contextMenuOpened = false;
 
   constructor() {
     classToObservableAuto(__filename, this);

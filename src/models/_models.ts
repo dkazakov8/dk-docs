@@ -3,7 +3,5 @@
 
 export * from './form';
 export * from './system';
-export * from './TypeConfirm';
 export * from './TypeLanguage';
 export * from './TypeLS';
-export * from './TypeNotification';

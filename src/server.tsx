@@ -2,8 +2,6 @@ import path from 'path';
 
 import { runServer } from 'dk-bff-server';
 
-import { analytic } from 'serverUtils/analytic';
-import { handleQuery } from 'serverUtils/handleQuery';
 import { helmetOptions } from 'serverUtils/helmetOptions';
 
 import { env } from '../env';
@@ -24,23 +22,15 @@ void runServer({
   versionIdentifier: env.GIT_COMMIT,
   compressedFilesGenerated: env.GENERATE_COMPRESSED,
   templateModifier: ({ template, req }) => {
-    try {
-      handleQuery(req);
-    } catch (error) {
-      console.error(error);
-    }
-
     return Promise.resolve().then(() => {
       const hotReloadUrl = `${env.HTTPS_BY_NODE ? 'https' : 'http'}://${req.headers.host}:${
         env.HOT_RELOAD_PORT
       }`;
 
-      return template
-        .replace(
-          '<!-- HOT_RELOAD -->',
-          env.HOT_RELOAD ? `<script src="${hotReloadUrl}"></script>` : ''
-        )
-        .replace('<!-- SENTRY -->', env.SENTRY_URL ? analytic.sentryScript : '');
+      return template.replace(
+        '<!-- HOT_RELOAD -->',
+        env.HOT_RELOAD ? `<script src="${hotReloadUrl}"></script>` : ''
+      );
     });
   },
   injectMeasures: ({ template, measures }) =>

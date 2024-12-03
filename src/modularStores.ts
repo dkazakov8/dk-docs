@@ -2,8 +2,8 @@
 // This file is auto-generated
 
 import formConfigure from './pages/formConfigure/store';
-import formGettingStarted from './pages/formGettingStarted/store';
-import formSubmitComponent from './pages/formSubmitComponent/store';
-import formTextComponent from './pages/formTextComponent/store';
+import install from './pages/install/store';
+import submit from './pages/submit/store';
+import textInput from './pages/textInput/store';
 
-export { formConfigure, formGettingStarted, formSubmitComponent, formTextComponent };
+export { formConfigure, install, submit, textInput };

@@ -1,19 +1,19 @@
 import { createRouterConfig } from 'dk-react-mobx-router';
 
 export const routes = createRouterConfig({
-  formGettingStarted: {
+  install: {
     path: '/',
-    loader: () => import('pages/formGettingStarted') as any,
+    loader: () => import('pages/install') as any,
     params: {},
   },
-  formTextComponent: {
-    path: '/form/text-component',
-    loader: () => import('pages/formTextComponent') as any,
+  textInput: {
+    path: '/text-input',
+    loader: () => import('pages/textInput') as any,
     params: {},
   },
-  formSubmitComponent: {
-    path: '/form/submit-component',
-    loader: () => import('pages/formSubmitComponent') as any,
+  submit: {
+    path: '/submit',
+    loader: () => import('pages/submit') as any,
     params: {},
   },
   formConfigure: {

@@ -19,89 +19,11 @@
   }
 }
 
-@mixin tooltip {
-  position: absolute;
-  z-index: 4;
-  right: 0;
-  top: 100%;
-  box-shadow: 0 4px 16px var(--border);
-  border-radius: 12px;
-  background: var(--background-primary);
-  width: 300px;
-  margin-top: 8px;
-  overflow: visible;
-  text-align: left;
-
-  :global {
-    animation: fadeIn 0.3s;
-  }
-
-  &.right {
-    left: 0;
-    right: auto;
-  }
-
-  &.toLeft {
-    right: 100%;
-    top: 0;
-    margin-top: 0;
-    margin-right: 8px;
-  }
-
-  > * {
-    &:first-child {
-      border-radius: 12px 12px 0 0;
-    }
-
-    &:last-child {
-      border-radius: 0 0 12px 12px;
-    }
-
-    &:only-child {
-      border-radius: 12px;
-    }
-  }
-}
-
-@mixin pageHeader {
-  font-size: 12px;
-  color: var(--content-3);
-  text-transform: uppercase;
-  display: flex;
-  flex-flow: row nowrap;
-  flex-shrink: 0;
-  padding: 24px 24px 16px 24px;
-  align-items: center;
-  line-height: 32px;
-  user-select: none;
-
-  .loadingSpinner {
-    margin-left: 20px;
-  }
-
-  .buttonsView {
-    margin-left: auto;
-  }
-}
-
 @mixin tableView {
   display: flex;
   flex-flow: column nowrap;
   align-items: stretch;
   padding: 30px;
-}
-
-@mixin menuItem {
-  padding: 10px 15px;
-  cursor: pointer;
-  user-select: none;
-  transition: background-color 0.2s;
-  background: var(--background-primary);
-
-  &:hover,
-  &.active {
-    background: var(--border);
-  }
 }
 
 /* Buttons */
@@ -121,9 +43,13 @@
   flex-shrink: 0;
   text-align: center;
   cursor: pointer;
-  transition: color 0.2s, background 0.2s;
+  transition:
+    color 0.2s,
+    background 0.2s;
   overflow: hidden;
-  box-shadow: 0px 1px 1px 0px var(--border), 0px 2px 1px 0px var(--border),
+  box-shadow:
+    0px 1px 1px 0px var(--border),
+    0px 2px 1px 0px var(--border),
     0px 1px 3px 0px var(--border);
 }
 
@@ -166,159 +92,12 @@
   }
 }
 
-/* Modal & Confirm */
-
-@mixin modal-backdrop {
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 0;
-  height: 100%;
-  background: var(--bgGrayTransparent);
-  transition-property: opacity;
-  overflow: hidden;
-
-  &.isLeaving {
-    opacity: 0;
-  }
-
-  :global {
-    animation-name: fadeIn;
-  }
-
-  :global(.mobile) & {
-    background: var(--bgWhiteAlpha);
-  }
-}
-
-@mixin confirm-wrapper {
-  position: relative;
-  transition-property: opacity;
-  padding: 30px 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  margin: 0 auto;
-}
-
-@mixin modal-wrapper {
-  @include confirm-wrapper;
-
-  :global(.mobile) & {
-    padding: 0;
-    align-items: stretch;
-  }
-}
-
-@mixin confirm {
-  position: relative;
-  box-shadow: 0 8px 32px var(--content-2);
-  background: var(--background-primary);
-  border-radius: 12px;
-  flex-grow: 1;
-  display: flex;
-  flex-flow: column nowrap;
-  overflow: hidden;
-  max-width: 640px;
-  max-height: 100%;
-
-  :global {
-    animation: fadeIn 0.3s;
-  }
-}
-
-@mixin modal {
-  @include confirm;
-
-  :global(.mobile) & {
-    max-width: 100%;
-    border-radius: 0;
-  }
-}
-
-@mixin spinner {
-  border: 3px solid transparent;
-  border-top-color: var(--content-1);
-  border-bottom-color: var(--content-1);
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  position: absolute;
-  z-index: 1;
-  left: 50%;
-  top: 50%;
-  margin-left: -20px;
-  margin-top: -20px;
-
-  :global {
-    animation: rotating 0.5s linear infinite;
-  }
-}
-
-@mixin overlay {
-  position: absolute;
-  z-index: 10;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  background: var(--bgWhiteAlpha);
-  margin-left: -99999px;
-  opacity: 0;
-  transition: opacity 0.3s, margin-left 0.3s ease 0.3s;
-}
-
-@mixin overlay-visible {
-  margin-left: 0;
-  opacity: 1;
-  transition: opacity 0.3s;
-}
-
 /* Text styles */
-
-@mixin title0 {
-  font-weight: 600;
-  font-size: 32px;
-  line-height: 32px;
-}
-
-@mixin title0Upper {
-  @include title0;
-  text-transform: uppercase;
-}
-
-@mixin title {
-  font-weight: 600;
-  font-size: 24px;
-  line-height: 24px;
-}
-
-@mixin titleUpper {
-  @include title;
-  text-transform: uppercase;
-}
-
-@mixin title2 {
-  font-weight: 600;
-  font-size: 18px;
-  line-height: 18px;
-}
-
-@mixin title2Upper {
-  @include title2;
-  text-transform: uppercase;
-}
 
 @mixin body16Regular {
   font-weight: 400;
   font-size: 16px;
   line-height: 22px;
-}
-
-@mixin body16Bold {
-  @include body16Regular;
-  font-weight: 600;
 }
 
 @mixin body18Regular {
@@ -336,32 +115,4 @@
   font-weight: 400;
   font-size: 14px;
   line-height: 18px;
-}
-
-@mixin caption14Bold {
-  @include caption14Regular;
-  font-weight: 600;
-}
-
-@mixin caption14BoldUpper {
-  @include caption14Bold;
-  text-transform: uppercase;
-}
-
-@mixin caption12Regular {
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 14px;
-}
-
-@mixin caption12Upper {
-  @include caption12Regular;
-  text-transform: uppercase;
-}
-
-@mixin promo {
-  font-weight: 900;
-  font-size: 48px;
-  line-height: 40px;
-  text-transform: uppercase;
 }

@@ -4,7 +4,6 @@
 .idea
 .vscode
 node_modules
-build
 tests/cypress/videos
 tests/cypress/screenshots
 tests/report.xml

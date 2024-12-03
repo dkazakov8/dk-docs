@@ -1,0 +1,23 @@
+@import "mixins.scss";
+
+.wrapper {
+  @include tableView;
+}
+
+.form {
+  width: 100%;
+  display: grid;
+  grid-row-gap: 32px;
+  grid-column-gap: 32px;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin-bottom: 30px;
+  min-width: 0;
+
+  > * {
+    min-width: 0;
+  }
+}
+
+.result {
+  margin-bottom: 20px;
+}

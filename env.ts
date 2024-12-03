@@ -17,13 +17,9 @@ class Env {
     });
   }
 
-  SENTRY_URL = '';
-  SENTRY_ENV = '';
   GIT_COMMIT = '';
   HOT_RELOAD = false;
   HOT_RELOAD_PORT = 0;
-  SWC_ENABLED = false;
-  POLYFILLING = false;
   FILENAME_HASH = false;
   BUNDLE_ANALYZER = false;
   MINIMIZE_CLIENT = false;
@@ -33,7 +29,6 @@ class Env {
   START_SERVER_AFTER_BUILD = false;
   GENERATOR_AGGREGATION_TIMEOUT = 0;
 
-  SG_BUILD_ENABLED = false;
   NODE_ENV: 'development' | 'production' = 'development';
   NODE_PATH = '';
   NODE_OPTIONS = '';

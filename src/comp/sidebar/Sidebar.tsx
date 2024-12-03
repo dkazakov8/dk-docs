@@ -23,22 +23,22 @@ export function Sidebar() {
     }>;
   }> = [
     {
-      title: 'Основы работы',
+      title: 'Настройка компонентов',
       children: [
         {
-          title: 'Установка и настройка',
-          route: routes.formGettingStarted,
-          activeOn: [routes.formGettingStarted],
+          title: 'Установка и базовая форма',
+          route: routes.install,
+          activeOn: [routes.install],
         },
         {
           title: 'Продвинутый инпут + Mantine + Antd',
-          route: routes.formTextComponent,
-          activeOn: [routes.formTextComponent],
+          route: routes.textInput,
+          activeOn: [routes.textInput],
         },
         {
           title: 'Компонент Submit и отправка формы',
-          route: routes.formSubmitComponent,
-          activeOn: [routes.formSubmitComponent],
+          route: routes.submit,
+          activeOn: [routes.submit],
         },
         {
           title: getLn(messages.formConfigure),

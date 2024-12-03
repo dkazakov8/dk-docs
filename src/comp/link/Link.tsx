@@ -1,7 +1,6 @@
 import React, { CSSProperties, MouseEvent, ReactNode, RefObject } from 'react';
 import { replaceDynamicValues, TypeRedirectToParams } from 'dk-react-mobx-router';
 
-import { getWebsiteUrl } from 'utils/getWebsiteUrl';
 import { useStore, ViewModel } from 'hooks/useStore';
 import { TypeGlobals } from 'models';
 import { classToObservableAuto } from 'compSystem/transformers';
@@ -20,7 +19,6 @@ type PropsLink<TRouteName extends keyof typeof routes> = TypeRedirectToParams<
   itemProp?: string;
   itemScope?: boolean;
   itemType?: string;
-  addItemProp?: boolean;
   id?: string;
   data?: Record<string, any>;
 };
@@ -60,7 +58,6 @@ export function Link<TRouteName extends keyof typeof routes>(props: PropsLink<TR
     className,
     itemScope,
     forwardRef,
-    addItemProp,
     onContextMenu,
   } = props;
 
@@ -69,13 +66,7 @@ export function Link<TRouteName extends keyof typeof routes>(props: PropsLink<TR
   const pathname =
     'params' in props ? replaceDynamicValues({ route, params: props.params }) : route.path;
 
-  let fullUrl = '';
-
-  if (addItemProp) {
-    const websiteUrl = getWebsiteUrl(context);
-
-    if (websiteUrl) fullUrl = `${websiteUrl}${pathname}`;
-  }
+  const fullUrl = pathname;
 
   const dataParams: Record<string, any> = {};
 

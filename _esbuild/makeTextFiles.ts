@@ -9,21 +9,22 @@ export function makeTextFiles() {
   const files = [
     // New
 
-    path.resolve(paths.source, 'pages/formGettingStarted/examples/Form.tsx'),
-    path.resolve(paths.source, 'pages/formGettingStarted/examples/Text.tsx'),
-    path.resolve(paths.source, 'pages/formGettingStarted/examples/ExampleBasic.tsx'),
+    path.resolve(paths.source, 'pages/install/examples/Form.tsx'),
+    path.resolve(paths.source, 'pages/install/examples/Text.tsx'),
+    path.resolve(paths.source, 'pages/install/examples/ExampleBasic.tsx'),
 
-    path.resolve(paths.source, 'pages/formTextComponent/examples/Form.tsx'),
-    path.resolve(paths.source, 'pages/formTextComponent/examples/Text.tsx'),
-    path.resolve(paths.source, 'pages/formTextComponent/examples/TextAntd.tsx'),
-    path.resolve(paths.source, 'pages/formTextComponent/examples/TextMantine.tsx'),
-    path.resolve(paths.source, 'pages/formTextComponent/examples/ExampleRegularAllCases.tsx'),
-    path.resolve(paths.source, 'pages/formTextComponent/examples/ExampleAntdAllCases.tsx'),
-    path.resolve(paths.source, 'pages/formTextComponent/examples/ExampleMantineAllCases.tsx'),
+    path.resolve(paths.source, 'pages/textInput/examples/Form.tsx'),
+    path.resolve(paths.source, 'pages/textInput/examples/Text.tsx'),
+    path.resolve(paths.source, 'pages/textInput/examples/TextAntd.tsx'),
+    path.resolve(paths.source, 'pages/textInput/examples/TextMantine.tsx'),
+    path.resolve(paths.source, 'pages/textInput/examples/ExampleRegularAllCases.tsx'),
+    path.resolve(paths.source, 'pages/textInput/examples/ExampleAntdAllCases.tsx'),
+    path.resolve(paths.source, 'pages/textInput/examples/ExampleMantineAllCases.tsx'),
 
-    path.resolve(paths.source, 'pages/formSubmitComponent/examples/Form.tsx'),
-    path.resolve(paths.source, 'pages/formSubmitComponent/examples/Text.tsx'),
-    path.resolve(paths.source, 'pages/formSubmitComponent/examples/Submit.tsx'),
+    path.resolve(paths.source, 'pages/submit/examples/Form.tsx'),
+    path.resolve(paths.source, 'pages/submit/examples/Text.tsx'),
+    path.resolve(paths.source, 'pages/submit/examples/Submit.tsx'),
+    path.resolve(paths.source, 'pages/submit/examples/ExampleSubmit.tsx'),
 
     // Old
 
@@ -34,7 +35,6 @@ export function makeTextFiles() {
 
     path.resolve(paths.source, 'comp/form/inputs/Submit.tsx'),
     path.resolve(paths.models, 'form/TypeInputSubmitConfig.ts'),
-    path.resolve(paths.source, 'pages/formSubmitComponent/examples/ExampleSubmit.tsx'),
 
     path.resolve(paths.source, 'comp/form/inputs/Text.tsx'),
     path.resolve(paths.models, 'form/TypeInputTextConfig.ts'),

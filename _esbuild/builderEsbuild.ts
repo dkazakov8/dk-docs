@@ -32,6 +32,7 @@ let sendReload: (() => void) | undefined;
 
 function afterFirstBuild() {
   fsExtra.copySync(path.resolve(paths.source, 'templates'), paths.build, { overwrite: false });
+  fs.copyFileSync(path.resolve(paths.build, 'index.html'), path.resolve(paths.build, '404.html'));
 
   if (!env.START_SERVER_AFTER_BUILD && !env.HOT_RELOAD) {
     process.exit(0);

@@ -98,7 +98,7 @@ export const configClient: BuildOptions = {
         // eslint-disable-next-line consistent-return
         as(filePath) {
           if (/client([^.]+)?\.css$/.test(filePath)) {
-            return `<link rel="stylesheet" type="text/css" href="${env.ASSETS_PREFIX}${filePath.replace('.css', env.GENERATE_COMPRESSED ? '.css.br' : '.css')}" />`;
+            return `<link rel="stylesheet" type="text/css" href="${env.ASSETS_PREFIX}${filePath}" />`;
           }
         },
       },
@@ -108,7 +108,7 @@ export const configClient: BuildOptions = {
         // eslint-disable-next-line consistent-return
         as(filePath) {
           if (/client([^.]+)?\.js$/.test(filePath)) {
-            return `<script src="${env.ASSETS_PREFIX}${filePath.replace('.js', env.GENERATE_COMPRESSED ? '.js.br' : '.js')}" defer=""></script>`;
+            return `<script src="${env.ASSETS_PREFIX}${filePath}" defer=""></script>`;
           }
         },
       },
@@ -128,7 +128,7 @@ export const configClient: BuildOptions = {
 
     pluginCompress({
       gzip: false,
-      brotli: env.GENERATE_COMPRESSED,
+      brotli: false,
       zstd: false,
       level: 'high',
       extensions: ['.js', '.css'],

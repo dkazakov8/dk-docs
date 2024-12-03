@@ -28,7 +28,7 @@ export const configClient: BuildOptions = {
   bundle: true,
   logLevel: 'warning',
   format: 'iife',
-  publicPath: '/',
+  publicPath: `${env.ASSETS_PREFIX}/`,
   entryNames: env.FILENAME_HASH ? '[ext]/[name]-[hash]' : '[ext]/[name]',
   assetNames: env.FILENAME_HASH ? '[ext]/[name]-[hash]' : '[ext]/[name]',
   chunkNames: env.FILENAME_HASH ? '[ext]/[name]-[hash]' : '[ext]/[name]',
@@ -53,6 +53,7 @@ export const configClient: BuildOptions = {
       env: {
         NODE_ENV: env.NODE_ENV,
         GIT_COMMIT: env.GIT_COMMIT,
+        ASSETS_PREFIX: env.ASSETS_PREFIX,
         LOGS_MEASURES: env.LOGS_MEASURES,
         LOGS_STORE_SETTER: env.LOGS_STORE_SETTER,
         LOGS_RESTORE_INITIAL: env.LOGS_RESTORE_INITIAL,
@@ -98,7 +99,7 @@ export const configClient: BuildOptions = {
         // eslint-disable-next-line consistent-return
         as(filePath) {
           if (/client([^.]+)?\.css$/.test(filePath)) {
-            return `<link rel="stylesheet" type="text/css" href="${env.ASSETS_PREFIX}${filePath}" />`;
+            return `<link rel="stylesheet" type="text/css" href="${filePath}" />`;
           }
         },
       },
@@ -108,7 +109,7 @@ export const configClient: BuildOptions = {
         // eslint-disable-next-line consistent-return
         as(filePath) {
           if (/client([^.]+)?\.js$/.test(filePath)) {
-            return `<script src="${env.ASSETS_PREFIX}${filePath}" defer=""></script>`;
+            return `<script src="${filePath}" defer=""></script>`;
           }
         },
       },
@@ -118,7 +119,7 @@ export const configClient: BuildOptions = {
         // eslint-disable-next-line consistent-return
         as(filePath) {
           if (filePath.endsWith('.woff')) {
-            return `<link as="font" crossorigin="anonymous" href="${env.ASSETS_PREFIX}${filePath}" rel="preload">`;
+            return `<link as="font" crossorigin="anonymous" href="${filePath}" rel="preload">`;
           }
         },
       },

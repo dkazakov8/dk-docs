@@ -21,6 +21,10 @@ export function makeTextFiles() {
     path.resolve(paths.source, 'pages/formTextComponent/examples/ExampleAntdAllCases.tsx'),
     path.resolve(paths.source, 'pages/formTextComponent/examples/ExampleMantineAllCases.tsx'),
 
+    path.resolve(paths.source, 'pages/formSubmitComponent/examples/Form.tsx'),
+    path.resolve(paths.source, 'pages/formSubmitComponent/examples/Text.tsx'),
+    path.resolve(paths.source, 'pages/formSubmitComponent/examples/Submit.tsx'),
+
     // Old
 
     path.resolve(paths.models, 'form/TypeFieldValidator.ts'),

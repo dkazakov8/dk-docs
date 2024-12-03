@@ -1,11 +1,11 @@
 import { FormConfig } from 'dk-react-mobx-config-form';
+import { useState } from 'react';
 
-import { Form } from 'comp/form';
-import { TypeGlobals, TypeInputSubmitConfig, TypeInputTextConfig } from 'models';
-import { useStore, ViewModel } from 'hooks/useStore';
-import { classToObservableAuto } from 'compSystem/transformers';
+import { TypeInputSubmitConfig, TypeInputTextConfig } from 'models';
 
 import styles from '../FormSubmitComponent.scss';
+
+import { Form } from './Form';
 
 const sampleForm = new FormConfig<{
   inputs: {
@@ -17,41 +17,36 @@ const sampleForm = new FormConfig<{
     textField: {
       type: 'text',
       value: '',
-      placeholder: 'Simple text field',
     },
   },
   submit: {
     type: 'submit',
-    label: 'Submit',
+    label: 'Отправить',
   },
 });
 
-class VM implements ViewModel {
-  constructor(public context: TypeGlobals) {
-    classToObservableAuto(__filename, this);
-  }
+export function ExampleSubmit() {
+  const [formConfig] = useState(() => sampleForm.copy());
 
-  sampleForm = sampleForm.copy();
-
-  result = {
+  const [result, setResult] = useState({
     inputName: '',
     inputValue: '',
-  };
-
-  handleSubmit() {
-    this.result.inputName = Object.keys(this.sampleForm.inputs).join('');
-    this.result.inputValue = this.sampleForm.inputs.textField.value;
-
-    return Promise.resolve();
-  }
-}
-
-export function ExampleSubmit() {
-  const { vm } = useStore(VM);
+  });
 
   return (
     <div>
-      <Form formConfig={vm.sampleForm} onSubmit={vm.handleSubmit}>
+      <Form
+        formConfig={formConfig}
+        onSubmit={() => {
+          // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+          return new Promise((resolve) => setTimeout(resolve, 500)).then(() => {
+            setResult({
+              inputName: Object.keys(formConfig.inputs).join(''),
+              inputValue: formConfig.inputs.textField.value,
+            });
+          });
+        }}
+      >
         {({ inputs, submit }) => (
           <div className={styles.form}>
             {inputs.textField}
@@ -59,9 +54,9 @@ export function ExampleSubmit() {
           </div>
         )}
       </Form>
-      {Boolean(vm.result.inputName) && (
+      {Boolean(result.inputName) && (
         <div className={styles.result}>
-          Result of {vm.result.inputName}: {vm.result.inputValue}
+          Result of {result.inputName}: {result.inputValue}
         </div>
       )}
     </div>

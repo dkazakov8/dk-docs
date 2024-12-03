@@ -36,7 +36,7 @@ export function Sidebar() {
           activeOn: [routes.formTextComponent],
         },
         {
-          title: getLn(messages.formsSubmitComponent),
+          title: 'Компонент Submit и отправка формы',
           route: routes.formSubmitComponent,
           activeOn: [routes.formSubmitComponent],
         },

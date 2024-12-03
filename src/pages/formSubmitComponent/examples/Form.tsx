@@ -1,23 +1,18 @@
 import {
-  PropsReactMobxForm,
   ReactMobxForm,
+  PropsReactMobxForm,
   TypeGenerateFormTypes,
 } from 'dk-react-mobx-config-form';
 import { observer } from 'mobx-react-lite';
 
 import { Text, TypeInputTextConfig } from './Text';
-import { TextAntd, TypeInputTextAntdConfig } from './TextAntd';
-import { TextMantine, TypeInputTextMantineConfig } from './TextMantine';
+import { Submit, TypeInputSubmitConfig } from './Submit';
 
-export type TypeForm = TypeGenerateFormTypes<
-  TypeInputTextConfig | TypeInputTextAntdConfig | TypeInputTextMantineConfig,
-  any
->;
+export type TypeForm = TypeGenerateFormTypes<TypeInputTextConfig, TypeInputSubmitConfig>;
 
 export const componentsMapper = {
   text: Text,
-  textAntd: TextAntd,
-  textMantine: TextMantine,
+  submit: Submit,
 };
 
 export const Form = observer(function Form<TFormConfig extends TypeForm['TypeFormConfig']>(

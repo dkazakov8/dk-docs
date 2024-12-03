@@ -26,31 +26,52 @@ export default function FormSubmitComponent() {
 
   return (
     <div className={styles.wrapper}>
-      <h1>Создание компонента submit</h1>
+      <h1>Компонент Submit и отправка формы</h1>
+
       <p>
-        Этот компонент не обязателен, так как доступ к значениям формы можно получить из-вне. Однако
-        с этим компонентом проще делать простые формы (т.к. нажатие на Enter автоматически вызовет
-        нажатие на эту кнопку)
+        Этот компонент не обязателен, но с ним проще делать простые формы - нажатие на Enter
+        автоматически вызовет отправку.
+      </p>
+
+      <p>
+        Детали реализации, как обычно, зависят от разработчика. В данном случае используется input
+        type="submit", поэтому props.onClick использовать не нужно, но на случай если этот компонент
+        например div элемент, то это проп нужен - он вызовет отправку формы по клику.
+      </p>
+
+      <p>
+        formConfig.isSubmitting - системное поле конфига, о котором подробнее будет рассказываться
+        дальше в этой документации.
       </p>
 
       <Sh
         code={[
           {
-            fileName: 'models/TypeInputSubmitConfig.ts',
-            code: require('txt/models/form/TypeInputSubmitConfig.txt'),
-            language: 'tsx',
-          },
-          {
-            fileName: 'comp/form/inputs/Submit.tsx',
-            code: require('txt/comp/form/inputs/Submit.txt'),
+            fileName: 'Submit.tsx',
+            code: require('txt/pages/formSubmitComponent/examples/Submit.txt'),
             language: 'tsx',
           },
         ]}
+        noExpand
       />
-      <Example
-        code={require('txt/pages/formSubmitComponent/examples/ExampleSubmit.txt')}
-        description={'Вывод результата под форму.'}
-      >
+
+      <p>
+        Этот компонент, как и другие инпуты, нужно зарегистрировать в TypeForm (на этот раз во
+        втором аргументе) и в componentsMapper
+      </p>
+
+      <Sh
+        code={[
+          {
+            fileName: 'Form.tsx',
+            code: require('txt/pages/formSubmitComponent/examples/Form.txt'),
+            language: 'tsx',
+          },
+        ]}
+        noExpand
+      />
+
+      <Example code={require('txt/pages/formSubmitComponent/examples/ExampleSubmit.txt')}>
         <ExampleSubmit />
       </Example>
     </div>

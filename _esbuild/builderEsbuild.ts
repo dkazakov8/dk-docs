@@ -33,19 +33,10 @@ let sendReload: (() => void) | undefined;
 function afterFirstBuild() {
   fsExtra.copySync(path.resolve(paths.source, 'templates'), paths.build, { overwrite: false });
 
-  if (env.GENERATE_COMPRESSED) {
-    fs.readdirSync(paths.build).forEach((fileName, index, arr) => {
-      if (fileName.endsWith('.css') || fileName.endsWith('.js')) {
-        if (!arr.includes(`${fileName}.gz`)) {
-          // eslint-disable-next-line no-console
-          console.log(fileName, 'HAS NO .gz VERSION!');
-        }
-        if (!arr.includes(`${fileName}.br`)) {
-          // eslint-disable-next-line no-console
-          console.log(fileName, 'HAS NO .br VERSION!');
-        }
-      }
-    });
+  if (!env.START_SERVER_AFTER_BUILD && !env.HOT_RELOAD) {
+    process.exit(0);
+
+    return;
   }
 
   /**

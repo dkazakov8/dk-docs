@@ -21,9 +21,7 @@ class VM implements ViewModel {
   beforeMount() {
     const { actions } = this.context;
 
-    void actions.routing.setMetaData({
-      title: messages.metaTitle,
-    });
+    void actions.routing.setMetaData({ title: messages.metaTitle });
   }
 }
 

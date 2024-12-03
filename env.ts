@@ -17,6 +17,7 @@ class Env {
     });
   }
 
+  ASSETS_PREFIX = '';
   GIT_COMMIT = '';
   HOT_RELOAD = false;
   HOT_RELOAD_PORT = 0;

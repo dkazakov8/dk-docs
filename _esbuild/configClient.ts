@@ -93,32 +93,32 @@ export const configClient: BuildOptions = {
 
     pluginInjectPreload([
       {
-        templatePath: path.resolve(paths.build, 'template.html'),
+        templatePath: path.resolve(paths.build, 'index.html'),
         replace: '<!-- ENTRY_CSS --><!-- /ENTRY_CSS -->',
         // eslint-disable-next-line consistent-return
         as(filePath) {
           if (/client([^.]+)?\.css$/.test(filePath)) {
-            return `<link rel="stylesheet" type="text/css" href="${filePath}" />`;
+            return `<link rel="stylesheet" type="text/css" href="${env.ASSETS_PREFIX}${filePath.replace('.css', env.GENERATE_COMPRESSED ? '.css.br' : '.css')}" />`;
           }
         },
       },
       {
-        templatePath: path.resolve(paths.build, 'template.html'),
+        templatePath: path.resolve(paths.build, 'index.html'),
         replace: '<!-- ENTRY_JS --><!-- /ENTRY_JS -->',
         // eslint-disable-next-line consistent-return
         as(filePath) {
           if (/client([^.]+)?\.js$/.test(filePath)) {
-            return `<script src="${filePath}" defer=""></script>`;
+            return `<script src="${env.ASSETS_PREFIX}${filePath.replace('.js', env.GENERATE_COMPRESSED ? '.js.br' : '.js')}" defer=""></script>`;
           }
         },
       },
       {
-        templatePath: path.resolve(paths.build, 'template.html'),
+        templatePath: path.resolve(paths.build, 'index.html'),
         replace: '<!-- FONT_PRELOAD --><!-- /FONT_PRELOAD -->',
         // eslint-disable-next-line consistent-return
         as(filePath) {
-          if (filePath.endsWith('.woff2')) {
-            return `<link as="font" crossorigin="anonymous" href="${filePath}" rel="preload">`;
+          if (filePath.endsWith('.woff')) {
+            return `<link as="font" crossorigin="anonymous" href="${env.ASSETS_PREFIX}${filePath}" rel="preload">`;
           }
         },
       },
@@ -127,9 +127,9 @@ export const configClient: BuildOptions = {
     pluginPushToOutput(),
 
     pluginCompress({
-      gzip: env.GENERATE_COMPRESSED,
+      gzip: false,
       brotli: env.GENERATE_COMPRESSED,
-      zstd: env.GENERATE_COMPRESSED,
+      zstd: false,
       level: 'high',
       extensions: ['.js', '.css'],
     }),

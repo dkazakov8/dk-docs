@@ -9,7 +9,8 @@
     "upd": "rm -rf ./node_modules&&pnpm i --prefer-offline",
 
     "build": "tsx -r dotenv/config ./_esbuild/builderEsbuild.ts",
-    "start": "node -r dotenv/config ./build/server.js",
+    "build-prod": "tsx -r dotenv/config --env-file=example.prod.env ./_esbuild/builderEsbuild.ts",
+    "start": "node -r dotenv/config  ./build/server.js",
 
     "analyze:js": "eslint --ignore-path .formatignore --ext \".js,.ts,.tsx\" ./",
     "analyze:style": "stylelint --ignore-path .formatignore \"**/*.scss\"",
@@ -32,8 +33,8 @@
     "@mantine/code-highlight": "7.2.2",
     "antd": "5.11.5",
     "classnames": "2.3.2",
-    "dk-bff-server": "3.1.37",
-    "dk-localize": "3.1.37",
+    "dk-bff-server": "3.4.10",
+    "dk-localize": "3.4.10",
     "dk-react-mobx-globals": "3.4.5",
     "dk-react-mobx-router": "3.4.5",
     "dk-react-mobx-config-form": "3.4.5",

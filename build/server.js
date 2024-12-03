@@ -40,6 +40,7 @@ var Env = class {
       }
     });
   }
+  ASSETS_PREFIX = "";
   GIT_COMMIT = "";
   HOT_RELOAD = false;
   HOT_RELOAD_PORT = 0;
@@ -174,7 +175,7 @@ isomorphPolyfills();
 void (0, import_dk_bff_server.runServer)({
   port: env.EXPRESS_PORT,
   https: env.HTTPS_BY_NODE,
-  templatePath: import_path2.default.resolve(paths.build, "template.html"),
+  templatePath: import_path2.default.resolve(paths.build, "index.html"),
   template500Path: import_path2.default.resolve(paths.build, "error500.html"),
   staticFilesPath: paths.build,
   versionIdentifier: env.GIT_COMMIT,

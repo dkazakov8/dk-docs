@@ -16,7 +16,7 @@ isomorphPolyfills();
 void runServer({
   port: env.EXPRESS_PORT,
   https: env.HTTPS_BY_NODE,
-  templatePath: path.resolve(paths.build, 'template.html'),
+  templatePath: path.resolve(paths.build, 'index.html'),
   template500Path: path.resolve(paths.build, 'error500.html'),
   staticFilesPath: paths.build,
   versionIdentifier: env.GIT_COMMIT,

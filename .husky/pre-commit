@@ -1,2 +1,4 @@
 pnpm run check-types-precommit
 npx lint-staged
+pnpm run build-prod
+git add -A .

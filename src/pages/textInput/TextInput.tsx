@@ -102,7 +102,7 @@ export default function TextInput() {
         code={[
           {
             fileName: 'Form.tsx',
-            code: require('txt/pages/textInput/examples/Form.txt'),
+            code: require('txt/pages/textInput/examples/FormDoc.txt'),
             language: 'tsx',
           },
         ]}

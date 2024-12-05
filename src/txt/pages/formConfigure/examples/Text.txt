@@ -48,7 +48,7 @@ export const Text = observer(function Text<TFormConfig extends TypeForm['TypeFor
   useState(() => {
     runInAction(() => {
       Object.assign(inputConfig, {
-        id: initialData?.id || inputConfig.id || `Input_${name}_${inputConfig.type}`,
+        id: initialData?.id || inputConfig.id || `Input_${name as string}_${inputConfig.type}`,
         value: initialData?.value || inputConfig.value,
         errors: inputConfig.errors || [],
         disabled: initialData?.disabled || inputConfig.disabled,
@@ -73,7 +73,7 @@ export const Text = observer(function Text<TFormConfig extends TypeForm['TypeFor
       <div className={styles.inputInner}>
         <input
           id={inputConfig.id}
-          name={name}
+          name={name as string}
           type={'text'}
           value={inputConfig.value}
           disabled={inputConfig.disabled}

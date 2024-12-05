@@ -25,7 +25,7 @@ export const Text = observer(function Text<TFormConfig extends TypeForm['TypeFor
       <div className={styles.inputInner}>
         <input
           id={inputConfig.id}
-          name={name}
+          name={name as string}
           type={'text'}
           value={inputConfig.value}
           onChange={(event) => {

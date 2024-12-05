@@ -19,7 +19,11 @@ export function makeTextFiles() {
   ];
 
   files.forEach((p) => {
-    const content = fs.readFileSync(p, 'utf-8');
+    const content = fs
+      .readFileSync(p, 'utf-8')
+      .replace('/* eslint-disable */\n', '')
+      .replace('// @ts-nocheck\n', '');
+
     fsExtra.outputFileSync(
       path.resolve(paths.source, 'txt', path.relative(paths.source, p).replace(/\.tsx?/, '.txt')),
       content

@@ -49,7 +49,7 @@ export const TextAntd = observer(function TextAntd<TFormConfig extends TypeForm[
   useState(() => {
     runInAction(() => {
       Object.assign(inputConfig, {
-        id: initialData?.id || inputConfig.id || `Input_${name}_${inputConfig.type}`,
+        id: initialData?.id || inputConfig.id || `Input_${name as string}_${inputConfig.type}`,
         value: initialData?.value || inputConfig.value,
         errors: inputConfig.errors || [],
         disabled: initialData?.disabled || inputConfig.disabled,
@@ -70,12 +70,11 @@ export const TextAntd = observer(function TextAntd<TFormConfig extends TypeForm[
 
       <Input
         id={inputConfig.id}
-        name={name}
+        name={name as string}
         type={'text'}
         value={inputConfig.value}
         disabled={inputConfig.disabled}
         placeholder={inputConfig.placeholder}
-        bordered
         size={'large'}
         status={inputConfig.errors!.length > 0 ? 'error' : undefined}
         onBlur={() => {

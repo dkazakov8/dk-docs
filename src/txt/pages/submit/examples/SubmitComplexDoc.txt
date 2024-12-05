@@ -1,5 +1,3 @@
-/* eslint-disable */
-// @ts-nocheck
 
 export const SubmitComplex = observer(function SubmitComplex<
   TFormConfig extends TypeForm['TypeFormConfig'],

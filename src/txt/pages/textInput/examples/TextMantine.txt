@@ -48,7 +48,7 @@ export const TextMantine = observer(function TextMantine<
   useState(() => {
     runInAction(() => {
       Object.assign(inputConfig, {
-        id: initialData?.id || inputConfig.id || `Input_${name}_${inputConfig.type}`,
+        id: initialData?.id || inputConfig.id || `Input_${name as string}_${inputConfig.type}`,
         value: initialData?.value || inputConfig.value,
         errors: inputConfig.errors || [],
         disabled: initialData?.disabled || inputConfig.disabled,
@@ -65,7 +65,7 @@ export const TextMantine = observer(function TextMantine<
         styles={{ root: { width: '100%' } }}
         id={inputConfig.id}
         label={inputConfig.label || undefined}
-        name={name}
+        name={name as string}
         type={'text'}
         error={
           inputConfig.errors!.length > 0

@@ -152,6 +152,7 @@ Promise.resolve()
 if (env.START_SERVER_AFTER_BUILD) {
   process.on('exit', () => {
     if (serverProcess) serverProcess.close();
+    // @ts-ignore
     if (reloadServerProcess) reloadServerProcess.close();
 
     void serverContext?.dispose();

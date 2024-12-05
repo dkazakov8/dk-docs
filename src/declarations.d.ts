@@ -17,13 +17,3 @@ interface Console {
   js: (...args: Array<unknown>) => void;
   jsf: (...args: Array<unknown>) => void;
 }
-
-declare module 'react-styleguidist' {
-  const def: (options: any) => {
-    server: (callback: (err?: Error) => void) => void;
-    build: (callback: (err?: Error) => void) => void;
-  };
-
-  // eslint-disable-next-line import/no-default-export,import/no-unused-modules
-  export default def;
-}

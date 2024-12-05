@@ -22,7 +22,7 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   mod
 ));
 
-// src/server.tsx
+// src/server.ts
 var import_path2 = __toESM(require("path"));
 var import_dk_bff_server = require("dk-bff-server");
 
@@ -69,37 +69,6 @@ var Env = class {
 var envInstance = new Env(process.env);
 var env = envInstance;
 
-// src/serverUtils/helmetOptions.ts
-var self = `'self'`;
-var unsafeEval = `'unsafe-eval'`;
-var unsafeInline = `'unsafe-inline'`;
-var helmetOptions = {
-  crossOriginOpenerPolicy: true,
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: [self],
-      childSrc: [self],
-      styleSrc: [self, unsafeInline],
-      scriptSrc: [
-        self,
-        unsafeEval,
-        unsafeInline,
-        `https://browser.sentry-cdn.com`,
-        env.HOT_RELOAD ? `localhost:${env.HOT_RELOAD_PORT}` : ""
-      ],
-      fontSrc: [self, `data:`],
-      objectSrc: [self],
-      connectSrc: [self, `ws: https://*.sentry.io`, "ws:", "wss:"],
-      imgSrc: [self, `data:`, `blob:`],
-      frameSrc: [self],
-      mediaSrc: [self],
-      workerSrc: [self, "blob:"],
-      formAction: []
-    },
-    reportOnly: false
-  }
-};
-
 // paths.ts
 var import_path = __toESM(require("path"));
 var root = "";
@@ -107,26 +76,17 @@ var source = import_path.default.resolve(root, "src");
 var paths = {
   root,
   source,
-  sg: import_path.default.resolve(root, "build/sg"),
-  stats: import_path.default.resolve(root, "stats"),
   env: import_path.default.resolve(root, "env.ts"),
   build: import_path.default.resolve(root, "build"),
   pages: import_path.default.resolve(source, "pages"),
-  paths: import_path.default.resolve(root, "paths.ts"),
   utils: import_path.default.resolve(source, "utils"),
   assets: import_path.default.resolve(source, "assets"),
   styles: import_path.default.resolve(source, "styles"),
   models: import_path.default.resolve(source, "models"),
   themes: import_path.default.resolve(source, "styles/themes.scss"),
   global: import_path.default.resolve(source, "styles/global.scss"),
-  package: import_path.default.resolve(root, "package.json"),
   actions: import_path.default.resolve(source, "actions"),
-  favicon: import_path.default.resolve(source, "templates/favicon.png"),
-  template: import_path.default.resolve(source, "templates/closed.html"),
-  validators: import_path.default.resolve(source, "validators"),
   nodeModules: import_path.default.resolve(root, "node_modules"),
-  clientEntry: import_path.default.resolve(source, "client.tsx"),
-  serverEntry: import_path.default.resolve(root, "server/server.ts"),
   themesObject: import_path.default.resolve(source, "const/themes.tsx")
 };
 
@@ -169,9 +129,38 @@ function isomorphPolyfills() {
   replaceOriginalErrorLogger();
 }
 
-// src/server.tsx
+// src/server.ts
 process.title = "node: bff-server";
 isomorphPolyfills();
+var self = `'self'`;
+var unsafeEval = `'unsafe-eval'`;
+var unsafeInline = `'unsafe-inline'`;
+var helmetOptions = {
+  crossOriginOpenerPolicy: true,
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: [self],
+      childSrc: [self],
+      styleSrc: [self, unsafeInline],
+      scriptSrc: [
+        self,
+        unsafeEval,
+        unsafeInline,
+        `https://browser.sentry-cdn.com`,
+        env.HOT_RELOAD ? `localhost:${env.HOT_RELOAD_PORT}` : ""
+      ],
+      fontSrc: [self, `data:`],
+      objectSrc: [self],
+      connectSrc: [self, `ws: https://*.sentry.io`, "ws:", "wss:"],
+      imgSrc: [self, `data:`, `blob:`],
+      frameSrc: [self],
+      mediaSrc: [self],
+      workerSrc: [self, "blob:"],
+      formAction: []
+    },
+    reportOnly: false
+  }
+};
 void (0, import_dk_bff_server.runServer)({
   port: env.EXPRESS_PORT,
   https: env.HTTPS_BY_NODE,

@@ -1,11 +1,11 @@
 import { FormConfig } from 'dk-react-mobx-config-form';
 import { useState } from 'react';
 
-import { TypeInputTextAntdConfig } from 'models';
 import { fieldValidators } from 'utils';
 
 import styles from '../TextInput.scss';
 
+import { TypeInputTextAntdConfig } from './TextAntd';
 import { Form } from './Form';
 
 export const sampleForm = new FormConfig<{

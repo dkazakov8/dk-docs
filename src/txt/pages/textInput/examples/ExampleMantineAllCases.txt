@@ -1,11 +1,12 @@
 import { FormConfig } from 'dk-react-mobx-config-form';
 import { useState } from 'react';
 
-import { Form } from 'comp/form';
-import { TypeInputTextMantineConfig } from 'models';
 import { fieldValidators } from 'utils';
 
 import styles from '../TextInput.scss';
+
+import { Form } from './Form';
+import { TypeInputTextMantineConfig } from './TextMantine';
 
 export const sampleForm = new FormConfig<{
   inputs: Record<

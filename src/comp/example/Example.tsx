@@ -1,10 +1,11 @@
 import React, { ReactNode } from 'react';
+import { ActionIcon } from '@mantine/core';
 
-import { Button } from 'comp/button';
 import { classToObservableAuto } from 'compSystem/transformers';
 import { Sh } from 'comp/sh';
 import { useStore, ViewModel } from 'hooks/useStore';
 import { TypeGlobals } from 'models';
+import { Icon } from 'comp/icon';
 
 import styles from './Example.scss';
 
@@ -45,13 +46,9 @@ export function Example(props: PropsExample) {
       <div className={styles.exampleBlock}>{children}</div>
       <div className={styles.exampleBottom}>
         <div className={styles.description}>{description}</div>
-        <Button
-          type={'white'}
-          iconOnly={'code'}
-          className={styles.codeButton}
-          noShadow
-          onClick={vm.handleToggleCode}
-        />
+        <ActionIcon variant={'default'} className={styles.codeButton} onClick={vm.handleToggleCode}>
+          <Icon glyph={'code'} />
+        </ActionIcon>
       </div>
       {codeOpen && (
         <div className={styles.code}>

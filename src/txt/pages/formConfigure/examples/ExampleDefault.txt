@@ -1,49 +1,51 @@
 import { FormConfig } from 'dk-react-mobx-config-form';
+import { useState } from 'react';
 
-import { Form } from 'comp/form';
-import { TypeGlobals, TypeInputTextConfig } from 'models';
-import { useStore, ViewModel } from 'hooks/useStore';
-import { classToObservableAuto } from 'compSystem/transformers';
 import { fieldValidators } from 'utils';
 
 import styles from '../FormConfigure.scss';
+
+import { Form } from './Form';
+import { TypeInputTextConfig } from './Text';
+import { TypeInputSubmitConfig } from './Submit';
 
 const sampleForm = new FormConfig<{
   inputs: {
     textField: TypeInputTextConfig;
   };
+  submit: TypeInputSubmitConfig;
 }>({
   inputs: {
     textField: {
       type: 'text',
       value: '',
-      placeholder: 'Simple text field',
       validators: { emptyString: fieldValidators.emptyString },
     },
   },
+  submit: {
+    type: 'submit',
+    label: 'Отправить',
+  },
 });
 
-class VM implements ViewModel {
-  constructor(public context: TypeGlobals) {
-    classToObservableAuto(__filename, this);
-  }
-
-  sampleForm = sampleForm.copy();
-}
-
 export function ExampleDefault() {
-  const { vm } = useStore(VM);
+  const [formConfig] = useState(() => sampleForm.copy());
 
   return (
     <div>
-      <Form formConfig={vm.sampleForm}>
-        {({ inputs }) => <div className={styles.result}>{inputs.textField}</div>}
+      <Form formConfig={formConfig}>
+        {({ inputs, submit }) => (
+          <div className={styles.result}>
+            {inputs.textField}
+            {submit}
+          </div>
+        )}
       </Form>
       <div className={styles.result}>
-        this.sampleForm.inputs: {JSON.stringify(vm.sampleForm.inputs)}
+        this.sampleForm.inputs: {JSON.stringify(formConfig.inputs)}
       </div>
       <div className={styles.result}>
-        this.sampleForm.original: {JSON.stringify(vm.sampleForm.original)}
+        this.sampleForm.original: {JSON.stringify(formConfig.original)}
       </div>
     </div>
   );

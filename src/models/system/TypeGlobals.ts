@@ -4,11 +4,7 @@ import { TypeRedirectToParams } from 'dk-react-mobx-router';
 import { TypeFnState } from 'dk-mobx-stateful-fn';
 
 // eslint-disable-next-line import/no-restricted-paths
-import * as modularStores from 'modularStores';
-// eslint-disable-next-line import/no-restricted-paths
 import globalActions from 'actions';
-// eslint-disable-next-line import/no-restricted-paths
-import * as modularActions from 'modularActions';
 // eslint-disable-next-line import/no-restricted-paths
 import * as staticStores from 'stores';
 // eslint-disable-next-line import/no-restricted-paths
@@ -44,11 +40,11 @@ export type TypeAction<T = undefined> = TypeActionGenerator<TypeGlobals, T>;
 export type TypeGlobals = TypeGlobalsGenerator<
   any,
   typeof staticStores,
-  { pages: typeof modularStores },
+  { pages: {} },
   Omit<typeof globalActions, 'routing'> & {
     routing: Omit<(typeof globalActions)['routing'], 'redirectTo'>;
   },
-  { pages: typeof modularActions },
+  { pages: {} },
   typeof getLn
 > & {
   actions: {

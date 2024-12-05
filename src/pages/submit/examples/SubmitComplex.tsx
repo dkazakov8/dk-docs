@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { autorun, runInAction } from 'mobx';
 import { Button } from '@mantine/core';
 
-import { TypeForm } from 'models';
+import { TypeForm } from './Form';
 
 export type TypeInputSubmitConfig = {
   type: 'submit';

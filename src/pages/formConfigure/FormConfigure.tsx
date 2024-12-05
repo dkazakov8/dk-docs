@@ -26,10 +26,7 @@ export default function FormConfigure() {
   return (
     <div className={styles.wrapper}>
       <h1>Использование и расширение возможностей конфига</h1>
-      <Example
-        code={require('txt/pages/formConfigure/examples/ExampleDefault.txt')}
-        description={'Дефолтные возможности формы'}
-      >
+      <Example code={require('txt/pages/formConfigure/examples/ExampleDefault.txt')}>
         <ExampleDefault />
       </Example>
     </div>

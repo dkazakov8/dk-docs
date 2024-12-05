@@ -7,7 +7,7 @@ import { excludeFalsy } from '../src/utils/tsUtils/excludeFalsy';
 import { env } from '../env';
 
 export const configServer: BuildOptions = {
-  entryPoints: ['src/server.tsx'],
+  entryPoints: ['src/server.ts'],
   bundle: true,
   metafile: true,
   treeShaking: true,

@@ -15,22 +15,7 @@ export function makeTextFiles() {
     ...addFilesFromFolder(path.resolve(paths.source, 'pages/textInput/examples')),
     ...addFilesFromFolder(path.resolve(paths.source, 'pages/submit/examples')),
     ...addFilesFromFolder(path.resolve(paths.source, 'pages/formConfigure/examples')),
-    ...[
-      path.resolve(paths.models, 'form/TypeFieldValidator.ts'),
-      path.resolve(paths.models, 'form/TypeFormConfig.ts'),
-      path.resolve(paths.utils, 'form/fieldValidators.ts'),
-      path.resolve(paths.source, 'comp/form/Form.tsx'),
-
-      path.resolve(paths.source, 'comp/form/inputs/Submit.tsx'),
-      path.resolve(paths.source, 'comp/form/inputs/Text.tsx'),
-      path.resolve(paths.source, 'comp/form/inputs/TextAntd.tsx'),
-      path.resolve(paths.source, 'comp/form/inputs/TextMantine.tsx'),
-
-      path.resolve(paths.models, 'form/TypeInputSubmitConfig.ts'),
-      path.resolve(paths.models, 'form/TypeInputTextConfig.ts'),
-      path.resolve(paths.models, 'form/TypeInputTextAntdConfig.ts'),
-      path.resolve(paths.models, 'form/TypeInputTextMantineConfig.ts'),
-    ],
+    path.resolve(paths.utils, 'fieldValidators.ts'),
   ];
 
   files.forEach((p) => {

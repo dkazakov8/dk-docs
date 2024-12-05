@@ -1,12 +1,13 @@
 import { FormConfig } from 'dk-react-mobx-config-form';
 import { useState } from 'react';
 
-import { TypeInputSubmitConfig, TypeInputTextConfig } from 'models';
 import { getTypedKeys } from 'utils';
 
 import styles from '../Submit.scss';
 
 import { Form } from './Form';
+import { TypeInputSubmitConfig } from './Submit';
+import { TypeInputTextConfig } from './Text';
 
 const sampleForm = new FormConfig<{
   inputs: {

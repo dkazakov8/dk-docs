@@ -11,8 +11,8 @@ import { runManual } from 'dk-reload-server';
 
 import { env } from '../env';
 import { paths } from '../paths';
-import { generatorConfigs } from '../generator/generator.config';
 
+import { generatorConfigs } from './generator.config';
 import { configServer } from './configServer';
 import { configClient } from './configClient';
 import { logBuildTime } from './logBuildTime';

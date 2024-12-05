@@ -5,7 +5,7 @@ import { Form } from 'comp/form';
 import { TypeInputTextMantineConfig } from 'models';
 import { fieldValidators } from 'utils';
 
-import styles from '../FormTextComponent.scss';
+import styles from '../TextInput.scss';
 
 export const sampleForm = new FormConfig<{
   inputs: Record<

@@ -5,47 +5,32 @@ import fsExtra from 'fs-extra';
 
 import { paths } from '../paths';
 
+function addFilesFromFolder(p: string) {
+  return fs.readdirSync(p).map((fileName) => path.join(p, fileName));
+}
+
 export function makeTextFiles() {
   const files = [
-    // New
+    ...addFilesFromFolder(path.resolve(paths.source, 'pages/install/examples')),
+    ...addFilesFromFolder(path.resolve(paths.source, 'pages/textInput/examples')),
+    ...addFilesFromFolder(path.resolve(paths.source, 'pages/submit/examples')),
+    ...addFilesFromFolder(path.resolve(paths.source, 'pages/formConfigure/examples')),
+    ...[
+      path.resolve(paths.models, 'form/TypeFieldValidator.ts'),
+      path.resolve(paths.models, 'form/TypeFormConfig.ts'),
+      path.resolve(paths.utils, 'form/fieldValidators.ts'),
+      path.resolve(paths.source, 'comp/form/Form.tsx'),
 
-    path.resolve(paths.source, 'pages/install/examples/Form.tsx'),
-    path.resolve(paths.source, 'pages/install/examples/Text.tsx'),
-    path.resolve(paths.source, 'pages/install/examples/ExampleBasic.tsx'),
+      path.resolve(paths.source, 'comp/form/inputs/Submit.tsx'),
+      path.resolve(paths.source, 'comp/form/inputs/Text.tsx'),
+      path.resolve(paths.source, 'comp/form/inputs/TextAntd.tsx'),
+      path.resolve(paths.source, 'comp/form/inputs/TextMantine.tsx'),
 
-    path.resolve(paths.source, 'pages/textInput/examples/Form.tsx'),
-    path.resolve(paths.source, 'pages/textInput/examples/Text.tsx'),
-    path.resolve(paths.source, 'pages/textInput/examples/TextAntd.tsx'),
-    path.resolve(paths.source, 'pages/textInput/examples/TextMantine.tsx'),
-    path.resolve(paths.source, 'pages/textInput/examples/ExampleRegularAllCases.tsx'),
-    path.resolve(paths.source, 'pages/textInput/examples/ExampleAntdAllCases.tsx'),
-    path.resolve(paths.source, 'pages/textInput/examples/ExampleMantineAllCases.tsx'),
-
-    path.resolve(paths.source, 'pages/submit/examples/Form.tsx'),
-    path.resolve(paths.source, 'pages/submit/examples/Text.tsx'),
-    path.resolve(paths.source, 'pages/submit/examples/Submit.tsx'),
-    path.resolve(paths.source, 'pages/submit/examples/ExampleSubmit.tsx'),
-
-    // Old
-
-    path.resolve(paths.models, 'form/TypeFieldValidator.ts'),
-    path.resolve(paths.models, 'form/TypeFormConfig.ts'),
-    path.resolve(paths.utils, 'form/fieldValidators.ts'),
-    path.resolve(paths.source, 'comp/form/Form.tsx'),
-
-    path.resolve(paths.source, 'comp/form/inputs/Submit.tsx'),
-    path.resolve(paths.models, 'form/TypeInputSubmitConfig.ts'),
-
-    path.resolve(paths.source, 'comp/form/inputs/Text.tsx'),
-    path.resolve(paths.models, 'form/TypeInputTextConfig.ts'),
-
-    path.resolve(paths.source, 'comp/form/inputs/TextAntd.tsx'),
-    path.resolve(paths.models, 'form/TypeInputTextAntdConfig.ts'),
-
-    path.resolve(paths.source, 'comp/form/inputs/TextMantine.tsx'),
-    path.resolve(paths.models, 'form/TypeInputTextMantineConfig.ts'),
-
-    path.resolve(paths.source, 'pages/formConfigure/examples/ExampleDefault.tsx'),
+      path.resolve(paths.models, 'form/TypeInputSubmitConfig.ts'),
+      path.resolve(paths.models, 'form/TypeInputTextConfig.ts'),
+      path.resolve(paths.models, 'form/TypeInputTextAntdConfig.ts'),
+      path.resolve(paths.models, 'form/TypeInputTextMantineConfig.ts'),
+    ],
   ];
 
   files.forEach((p) => {

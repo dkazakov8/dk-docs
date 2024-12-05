@@ -5,17 +5,17 @@ import { env } from 'env';
 export const routes = createRouterConfig({
   install: {
     path: `${env.ASSETS_PREFIX}/`,
-    loader: () => import('pages/install') as any,
+    loader: () => import('pages/install/Install') as any,
     params: {},
   },
   textInput: {
     path: `${env.ASSETS_PREFIX}/text-input`,
-    loader: () => import('pages/textInput') as any,
+    loader: () => import('pages/textInput/TextInput') as any,
     params: {},
   },
   submit: {
     path: `${env.ASSETS_PREFIX}/submit`,
-    loader: () => import('pages/submit') as any,
+    loader: () => import('pages/submit/Submit') as any,
     params: {},
   },
   formConfigure: {

@@ -2,8 +2,8 @@ import { TypeSubmitProps } from 'dk-react-mobx-config-form';
 import { observer } from 'mobx-react-lite';
 import { useState } from 'react';
 import { runInAction } from 'mobx';
+import { Button } from '@mantine/core';
 
-import { Button } from 'comp/button';
 import { TypeForm } from 'models';
 
 export type TypeInputSubmitConfig = {
@@ -30,12 +30,10 @@ export const Submit = observer(function Submit<TFormConfig extends TypeForm['Typ
 
   return (
     <Button
-      type={'blue'}
-      element={'submit'}
-      onClick={onClick}
       id={inputConfig.id}
       disabled={inputConfig.disabled}
-      isLoading={formConfig.isSubmitting}
+      loading={formConfig.isSubmitting}
+      onClick={onClick}
     >
       {inputConfig.label}
     </Button>

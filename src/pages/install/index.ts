@@ -1,5 +1,5 @@
 import { default as store } from './store';
-import { default as PageComponent } from './FormGettingStarted';
+import { default as PageComponent } from './Install';
 
 export const pageName = __dirname.split(PATH_SEP).pop();
 

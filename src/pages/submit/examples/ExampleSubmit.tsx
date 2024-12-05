@@ -2,8 +2,9 @@ import { FormConfig } from 'dk-react-mobx-config-form';
 import { useState } from 'react';
 
 import { TypeInputSubmitConfig, TypeInputTextConfig } from 'models';
+import { getTypedKeys } from 'utils';
 
-import styles from '../FormSubmitComponent.scss';
+import styles from '../Submit.scss';
 
 import { Form } from './Form';
 
@@ -28,10 +29,7 @@ const sampleForm = new FormConfig<{
 export function ExampleSubmit() {
   const [formConfig] = useState(() => sampleForm.copy());
 
-  const [result, setResult] = useState({
-    inputName: '',
-    inputValue: '',
-  });
+  const [result, setResult] = useState({ values: '' });
 
   return (
     <div>
@@ -41,8 +39,9 @@ export function ExampleSubmit() {
           // eslint-disable-next-line @typescript-eslint/no-magic-numbers
           return new Promise((resolve) => setTimeout(resolve, 500)).then(() => {
             setResult({
-              inputName: Object.keys(formConfig.inputs).join(''),
-              inputValue: formConfig.inputs.textField.value,
+              values: getTypedKeys(formConfig.inputs)
+                .map((inputName) => `${inputName}: ${formConfig.inputs[inputName].value}`)
+                .join(', '),
             });
           });
         }}
@@ -54,11 +53,8 @@ export function ExampleSubmit() {
           </div>
         )}
       </Form>
-      {Boolean(result.inputName) && (
-        <div className={styles.result}>
-          Result of {result.inputName}: {result.inputValue}
-        </div>
-      )}
+
+      {Boolean(result.values) && <div className={styles.result}>Result: {result.values}</div>}
     </div>
   );
 }

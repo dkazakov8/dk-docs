@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 import { fieldValidators } from 'utils';
 
-import styles from '../FormTextComponent.scss';
+import styles from '../TextInput.scss';
 
 import { TypeInputTextConfig } from './Text';
 import { Form } from './Form';

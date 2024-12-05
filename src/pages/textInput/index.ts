@@ -1,5 +1,5 @@
 import { default as store } from './store';
-import { default as PageComponent } from './FormTextComponent';
+import { default as PageComponent } from './TextInput';
 
 export const pageName = __dirname.split(PATH_SEP).pop();
 

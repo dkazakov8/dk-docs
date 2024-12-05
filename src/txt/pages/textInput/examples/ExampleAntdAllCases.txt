@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { TypeInputTextAntdConfig } from 'models';
 import { fieldValidators } from 'utils';
 
-import styles from '../FormTextComponent.scss';
+import styles from '../TextInput.scss';
 
 import { Form } from './Form';
 
